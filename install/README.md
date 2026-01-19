@@ -55,7 +55,7 @@ ollama pull qwen2.5-coder:7b
 If your IDE requires the npm client (see IDE Integration section below), install it:
 
 ```bash
-npm install -g @recallium/mcp-client
+npm install -g recallium
 ```
 
 ---
@@ -68,17 +68,17 @@ If you need to change default ports (e.g., port 9000 is already in use), edit `r
 
 ```bash
 # Edit install/recallium.env and change HOST port mappings:
-HOST_UI_PORT=9001        # Access UI at localhost:9001 (default: 9000)
-HOST_MCP_PORT=8001       # Access MCP API at localhost:8001 (default: 8000)
-HOST_POSTGRES_PORT=5433  # Access PostgreSQL at localhost:5433 (default: 5432)
+HOST_UI_PORT=9001        # Access UI at localhost:9001
+HOST_MCP_PORT=8001       # Access MCP API at localhost:8001
+HOST_POSTGRES_PORT=5433  # Access PostgreSQL at localhost:5433
 ```
 
 **How it works:** Docker maps your host machine ports to fixed container ports:
-- `HOST_UI_PORT=9001` → Container internal port 9000 maps to your localhost:9001
-- Container **always** uses fixed internal ports (MCP:8000, UI:9000, DB:5432)
-- You only configure the **HOST_*** ports to avoid conflicts on your machine
+- `HOST_UI_PORT=9001` → Container internal port 9001 maps to your localhost:9001
+- Container uses internal ports (MCP:8001, UI:9001, DB:5432)
+- You can configure the **HOST_*** ports to avoid conflicts on your machine
 
-**Important:** If you change `HOST_MCP_PORT` from the default `8000`, you **must also update** your IDE's MCP client configuration to use the new port. See the `mcp-config/` directory for your IDE:
+**Important:** If you change `HOST_MCP_PORT` from the default `8001`, you **must also update** your IDE's MCP client configuration to use the new port. See the `mcp-config/` directory for your IDE:
 - `mcp-config/cursor/` - Cursor IDE configuration
 - `mcp-config/vscode/` - VS Code configuration
 - `mcp-config/claude-code/` - Claude Desktop configuration
@@ -93,9 +93,51 @@ docker compose --env-file recallium.env up -d
 ```
 
 **That's it!** Access Recallium at:
-- **Web UI**: http://localhost:9000 (or your configured HOST_UI_PORT)
-- **MCP API**: http://localhost:8000 (or your configured HOST_MCP_PORT)
-- **Health Check**: http://localhost:8000/health
+- **Web UI**: http://localhost:9001 (or your configured HOST_UI_PORT)
+- **MCP API**: http://localhost:8001 (or your configured HOST_MCP_PORT)
+- **Health Check**: http://localhost:8001/health
+
+---
+
+## Setup Wizard (First-Time Configuration)
+
+On first launch, visit **http://localhost:9001** to complete the setup wizard:
+
+### 1. Choose Your LLM Provider
+
+Recallium works with **any LLM provider**—use what you already have:
+
+| Provider | Models | Notes |
+|----------|--------|-------|
+| **Anthropic** | Claude 3.5 Sonnet, Claude 3 Opus/Sonnet/Haiku | Recommended for best results |
+| **OpenAI** | GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo | Function calling, streaming |
+| **Google Gemini** | Gemini 1.5 Pro, Gemini 1.5 Flash | Multi-modal support |
+| **Ollama** | Llama 3, Mistral, Qwen, any local model | **Free, runs locally** |
+| **OpenRouter** | 100+ models via single API | Access any model |
+
+### 2. Test Your Configuration
+
+The setup wizard lets you:
+- **Test API keys** before saving
+- **Verify connectivity** to your chosen provider
+- **Switch providers anytime** without losing data
+
+### 3. Complete Setup
+
+Once configured, the MCP tools become available to all connected IDEs.
+
+### Free Local Setup (No API Keys Required)
+
+Want to run completely free and private?
+
+```
+LLM: Ollama (local models like Llama 3, Mistral)
+Embeddings: GTE-Large (built-in, runs locally)
+```
+
+Just select Ollama in the setup wizard and ensure Ollama is running locally.
+
+---
 
 ## Configuration
 
@@ -106,31 +148,30 @@ The `recallium.env` file contains all configuration options. Key settings:
 POSTGRES_PASSWORD=recallium_password  # Change in production!
 ```
 
-### LLM Provider
-```bash
-# Default: Ollama (free, local)
-LLM_PROVIDER=ollama
-LLM_MODEL=qwen2.5-coder:7b
+### LLM Provider (5 Options)
 
-# Or use OpenAI
-# LLM_PROVIDER=openai
-# LLM_MODEL=gpt-4o
-# OPENAI_API_KEY=sk-...
+**Configure via Setup Wizard at http://localhost:9001**
 
-# Or use Anthropic
-# LLM_PROVIDER=anthropic
-# LLM_MODEL=claude-sonnet-4-5-20250929
-# ANTHROPIC_API_KEY=sk-ant-...
-```
+API keys are securely vaulted inside your Docker container—never stored in plain text files.
+
+| Provider | Models | Notes |
+|----------|--------|-------|
+| **Ollama** | Llama 3, Mistral, Qwen, any local model | **Free, local** - Default |
+| **Anthropic** | Claude 3.5 Sonnet, Claude 3 Opus/Sonnet/Haiku | Recommended for best results |
+| **OpenAI** | GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo | Function calling, streaming |
+| **Google Gemini** | Gemini 1.5 Pro, Gemini 1.5 Flash | Multi-modal support |
+| **OpenRouter** | 100+ models via single API | Access any model |
+
+The Setup Wizard lets you:
+- **Test API keys** before saving
+- **Switch providers** anytime without losing data
+- **Configure failover** providers for reliability
 
 ### Ports (Host Mappings)
 ```bash
-HOST_UI_PORT=9000        # Access UI on your machine
-HOST_MCP_PORT=8000       # Access MCP API on your machine
-HOST_POSTGRES_PORT=5432  # Access PostgreSQL on your machine
-
-# Container internal ports are fixed (not configurable):
-# MCP:8000, UI:9000, DB:5432
+HOST_UI_PORT=9001        # Access UI on your machine
+HOST_MCP_PORT=8001       # Access MCP API on your machine
+HOST_POSTGRES_PORT=5433  # Access PostgreSQL on your machine
 ```
 
 See `recallium.env` for all available options with detailed inline documentation.
@@ -164,20 +205,16 @@ MAX_CONCURRENT=10               # More parallel operations
 QUEUE_WORKERS=3                 # More background workers
 ```
 
-### Use OpenAI or Anthropic
-```bash
-# Edit install/recallium.env
+### Switch LLM Providers
 
-# OpenAI
-LLM_PROVIDER=openai
-LLM_MODEL=gpt-4o
-OPENAI_API_KEY=sk-...
+Use the **Setup Wizard** at http://localhost:9001 → Providers
 
-# Anthropic
-LLM_PROVIDER=anthropic
-LLM_MODEL=claude-sonnet-4-5-20250929
-ANTHROPIC_API_KEY=sk-ant-...
-```
+- Add new provider credentials securely (vaulted, not in plain text)
+- Test connectivity before saving
+- Switch active provider instantly
+- Configure fallback providers
+
+No container restart required—changes take effect immediately.
 
 ### Disable Features
 ```bash
@@ -202,7 +239,7 @@ Recallium supports two connection methods:
 
 ### HTTP-Capable IDEs (Recommended - No npm Client)
 
-These IDEs connect directly to `http://localhost:8000/mcp`:
+These IDEs connect directly to `http://localhost:8001/mcp`:
 
 <details>
 <summary><b>Install in Cursor</b></summary>
@@ -215,7 +252,7 @@ Go to: `Settings` → `Cursor Settings` → `MCP` → `Add new global MCP server
 {
   "mcpServers": {
     "recallium": {
-      "url": "http://localhost:8000/mcp",
+      "url": "http://localhost:8001/mcp",
       "transport": "http"
     }
   }
@@ -248,7 +285,7 @@ Go to: `Settings` → `Cursor Settings` → `MCP` → `Add new global MCP server
 1. Press `Ctrl/Cmd + Shift + P`
 2. Type and select: `MCP: Add Server`
 3. Choose: `HTTP`
-4. Enter URL: `http://localhost:8000/mcp`
+4. Enter URL: `http://localhost:8001/mcp`
 5. Enter name: `recallium`
 
 **Method 2: Manual Configuration**
@@ -266,7 +303,7 @@ Add this to your VS Code MCP config file:
     "servers": {
       "recallium": {
         "type": "http",
-        "url": "http://localhost:8000/mcp"
+        "url": "http://localhost:8001/mcp"
       }
     }
   }
@@ -293,7 +330,7 @@ See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-serve
 Run this command to add Recallium with HTTP transport:
 
 ```bash
-claude mcp add --transport http recallium http://localhost:8000/mcp
+claude mcp add --transport http recallium http://localhost:8001/mcp
 ```
 
 **Verification:**
@@ -318,7 +355,7 @@ Add this to your Windsurf MCP config file:
 {
   "mcpServers": {
     "recallium": {
-      "serverUrl": "http://localhost:8000/mcp"
+      "serverUrl": "http://localhost:8001/mcp"
     }
   }
 }
@@ -336,7 +373,7 @@ Add this to your Roo Code MCP configuration file:
   "mcpServers": {
     "recallium": {
       "type": "streamable-http",
-      "url": "http://localhost:8000/mcp"
+      "url": "http://localhost:8001/mcp"
     }
   }
 }
@@ -355,7 +392,7 @@ Add this to your Visual Studio MCP config file. See [Visual Studio MCP docs](htt
   "servers": {
     "recallium": {
       "type": "http",
-      "url": "http://localhost:8000/mcp"
+      "url": "http://localhost:8001/mcp"
     }
   }
 }
@@ -367,11 +404,11 @@ Add this to your Visual Studio MCP config file. See [Visual Studio MCP docs](htt
 <summary><b>Other HTTP-Capable IDEs</b></summary>
 
 Recallium also works with:
-- **Gemini CLI** - Use `httpUrl: "http://localhost:8000/mcp"`
-- **Qodo Gen** - Use `type: "remote", url: "http://localhost:8000/mcp"`
-- **Opencode** - Use `type: "remote", url: "http://localhost:8000/mcp"`
-- **Trae** - Use `url: "http://localhost:8000/mcp"`
-- **Copilot Coding Agent** - Use `type: "http", url: "http://localhost:8000/mcp"`
+- **Gemini CLI** - Use `httpUrl: "http://localhost:8001/mcp"`
+- **Qodo Gen** - Use `type: "remote", url: "http://localhost:8001/mcp"`
+- **Opencode** - Use `type: "remote", url: "http://localhost:8001/mcp"`
+- **Trae** - Use `url: "http://localhost:8001/mcp"`
+- **Copilot Coding Agent** - Use `type: "http", url: "http://localhost:8001/mcp"`
 
 Refer to your IDE's MCP documentation for exact configuration syntax.
 
@@ -427,7 +464,7 @@ Add this to your Zed `settings.json`. See [Zed Context Server docs](https://zed.
       "command": "npx",
       "args": ["-y", "recallium-mcp"],
       "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8000/mcp"
+        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
     }
   }
@@ -455,7 +492,7 @@ See [JetBrains AI Assistant Documentation](https://www.jetbrains.com/help/ai-ass
       "command": "npx",
       "args": ["-y", "recallium-mcp"],
       "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8000/mcp"
+        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
     }
   }
@@ -480,7 +517,7 @@ Add this to your Cline MCP servers configuration:
       "command": "npx",
       "args": ["-y", "recallium-mcp"],
       "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8000/mcp"
+        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
     }
   }
@@ -501,7 +538,7 @@ Open the "Settings" page of the app, navigate to "Plugins," and enter the follow
       "command": "npx",
       "args": ["-y", "recallium-mcp"],
       "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8000/mcp"
+        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
     }
   }
@@ -528,7 +565,7 @@ More information is available on [BoltAI's Documentation site](https://docs.bolt
       "command": "npx",
       "args": ["-y", "recallium-mcp"],
       "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8000/mcp"
+        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
     }
   ]
@@ -554,7 +591,7 @@ See [Warp MCP Documentation](https://docs.warp.dev/knowledge-and-collaboration/m
     "command": "npx",
     "args": ["-y", "recallium-mcp"],
     "env": {
-      "RECALLIUM_SERVER_URL": "http://localhost:8000/mcp"
+      "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
     },
     "working_directory": null,
     "start_on_launch": true
@@ -578,7 +615,7 @@ Add this to your Amazon Q Developer CLI configuration file. See [Amazon Q Develo
       "command": "npx",
       "args": ["-y", "recallium-mcp"],
       "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8000/mcp"
+        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
     }
   }
@@ -587,7 +624,7 @@ Add this to your Amazon Q Developer CLI configuration file. See [Amazon Q Develo
 
 </details>
 
-**Note:** If you changed `HOST_MCP_PORT` in `recallium.env` from the default `8000`, update the URL in your IDE config (e.g., `http://localhost:8001/mcp`).
+**Note:** If you changed `HOST_MCP_PORT` in `recallium.env` from the default `8001`, update the URL in your IDE config accordingly.
 
 ## Management Commands
 
@@ -639,7 +676,7 @@ You can test and debug your Recallium MCP connection using the official MCP Insp
 
 ```bash
 # Test HTTP connection
-npx @modelcontextprotocol/inspector http://localhost:8000/mcp
+npx @modelcontextprotocol/inspector http://localhost:8001/mcp
 
 # Test npm client (stdio→HTTP bridge)
 npx @modelcontextprotocol/inspector npx -y recallium-mcp
@@ -723,17 +760,17 @@ The latest npm client (v1.2.3+) includes the correct Accept headers required by 
 
 2. Check MCP server health:
    ```bash
-   curl http://localhost:8000/health
-   curl http://localhost:8000/mcp/status
+   curl http://localhost:8001/health
+   curl http://localhost:8001/mcp/status
    ```
 
 3. For HTTP-capable IDEs (Cursor, VS Code):
-   - Verify URL ends with `/mcp`: `http://localhost:8000/mcp`
+   - Verify URL ends with `/mcp`: `http://localhost:8001/mcp`
    - Restart your IDE after config changes
 
 4. For command-only IDEs (Claude Desktop, Zed):
    - Ensure npm client is installed: `npm list -g @recallium/mcp-client`
-   - Check `RECALLIUM_SERVER_URL` includes `/mcp`: `http://localhost:8000/mcp`
+   - Check `RECALLIUM_SERVER_URL` includes `/mcp`: `http://localhost:8001/mcp`
 
 </details>
 
@@ -764,10 +801,10 @@ docker ps -f name=recallium
 docker logs -f recallium
 
 # Check health endpoint
-curl http://localhost:8000/health
+curl http://localhost:8001/health
 
 # Check MCP status with tool list
-curl http://localhost:8000/mcp/status
+curl http://localhost:8001/mcp/status
 ```
 
 </details>
@@ -816,7 +853,7 @@ recallium-mcp --version
 **Connection timeout:**
 ```bash
 # Test npm client directly
-RECALLIUM_DEBUG=true RECALLIUM_SERVER_URL=http://localhost:8000/mcp recallium-mcp
+RECALLIUM_DEBUG=true RECALLIUM_SERVER_URL=http://localhost:8001/mcp recallium-mcp
 ```
 
 **Wrong Node.js version:**
@@ -829,8 +866,29 @@ node --version
 
 ## Next Steps
 
-1. **Test Recallium**: Visit http://localhost:9000
-2. **Configure IDE**: Follow the guides in `mcp-config/`
-3. **Start Building**: Your AI now has persistent memory!
+1. **Complete Setup Wizard**: Visit http://localhost:9001 to configure your LLM provider
+2. **Configure IDE**: Follow the IDE Integration guides above
+3. **Start Using**: Your AI now has persistent memory across sessions!
+
+### Quick Verification
+
+```bash
+# Check container is running
+docker ps -f name=recallium
+
+# Check health
+curl http://localhost:8001/health
+
+# Check MCP status
+curl http://localhost:8001/mcp/status
+```
+
+### What You Can Do Now
+
+- **Store memories**: Decisions, patterns, learnings automatically preserved
+- **Search across projects**: Find past context instantly
+- **Get insights**: Pattern analysis across your work
+- **Link projects**: Share knowledge between related projects
+- **Upload documents**: PDFs, docs become searchable knowledge
 
 ---

@@ -5,7 +5,7 @@
 
 *Your digital developer twin—Because "Explain Our Setup Again" Gets Old Fast*
 
-*v0.8.145: January 2025*
+*v0.8.146: January 2026*
 
 ---
 
@@ -92,6 +92,72 @@ docker compose --env-file recallium.env up -d
 **Supported IDEs**: Cursor • Claude Desktop • Claude Code • VS Code • Windsurf • Roo Code • Visual Studio 2022 • JetBrains • Zed • Cline • BoltAI • Augment Code • Warp • Amazon Q • AntiGravity • and more...
 
 See [install/README.md](install/README.md) for detailed setup instructions for your IDE.
+
+---
+
+## Setup Wizard & Provider Configuration
+
+**First-time setup takes 2 minutes** via the web dashboard at `http://localhost:9001`
+
+### Choose Your LLM Provider
+
+Recallium works with **any LLM provider**—use what you already have:
+
+| Provider | Models | Notes |
+|----------|--------|-------|
+| **Anthropic** | Claude 3.5 Sonnet, Claude 3 Opus/Sonnet/Haiku | Recommended for best results |
+| **OpenAI** | GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo | Function calling, streaming |
+| **Google Gemini** | Gemini 1.5 Pro, Gemini 1.5 Flash | Multi-modal support |
+| **Ollama** | Llama 3, Mistral, Qwen, any local model | **Free, runs locally** |
+| **OpenRouter** | 100+ models via single API | Access any model |
+
+### Free Local Setup (No API Keys Required)
+
+Want to run completely free and private?
+
+```
+LLM: Ollama (local models like Llama 3, Mistral)
+Embeddings: GTE-Large (built-in, runs locally)
+```
+
+### Setup Wizard Features
+
+- **Test before you commit** — Verify API keys work before saving
+- **Switch providers anytime** — Change LLM providers without losing memories
+- **Automatic failover** — Configure backup providers for reliability
+- **Secure credential storage** — API keys stored in encrypted vault
+- **Hot reload** — Provider changes take effect immediately
+
+### Embedding (Free by Default)
+
+Recallium uses **GTE-Large** (1024 dimensions) for embeddings:
+- Runs locally on your machine
+- No API costs, no rate limits
+- Works on CPU, CUDA, or Apple Silicon (MPS)
+
+---
+
+## Web Dashboard
+
+Access the full-featured UI at `http://localhost:9001`
+
+![Recallium Dashboard](images/s5.jpg)
+
+### 18 Feature Pages
+
+| Page | What You Can Do |
+|------|-----------------|
+| **Dashboard** | Overview, stats, recent activity, quick insights |
+| **Memory Explorer** | Search, filter, bulk operations, tag management |
+| **Projects** | Briefs, documents, links, timeline, tasks |
+| **Insights** | Pattern analysis, cluster visualization, recommendations |
+| **Analytics** | Token usage, activity trends, cost tracking |
+| **Documents** | Upload PDFs/DOCX, search chunks, manage files |
+| **Tasks** | Create, track, link memories to tasks |
+| **Memory Graph** | Visual relationship mapping between memories |
+| **Thinking** | View reasoning sequences, explore branches |
+| **Providers** | Configure LLM & embedding providers |
+| **Admin** | System logs, configuration, maintenance |
 
 ---
 
@@ -299,6 +365,57 @@ Cursor: [Generates code matching section 3 of your PDF exactly]
 
 ---
 
+### **Resume Where You Left Off**
+```
+You (starting a new session): "recallium"
+
+Claude: "Welcome back! Loading your context...
+
+         📊 Project: ecommerce-api
+         📝 Recent: 12 memories in last 7 days
+
+         Last session (2 days ago):
+         → Implemented JWT refresh token rotation
+         → Fixed race condition in payment webhook
+         → Decision: Using Redis for session storage
+
+         📋 Pending Tasks:
+         → Add rate limiting to checkout endpoint
+         → Write tests for payment flow
+
+         📜 Active Rules:
+         → Always confirm destructive operations
+         → Search memories before implementing
+
+         Ready to continue. What would you like to work on?"
+```
+
+---
+
+### **Get a Quick Recap**
+```
+You: "What was I working on last week?"
+
+Claude: "Here's your session recap for ecommerce-api:
+
+         Progress (7 days):
+         → 15 memories stored
+         → 3 tasks completed, 2 pending
+         → Most active: authentication module
+
+         Key Decisions:
+         → JWT with 15min access, 7-day refresh tokens
+         → Redis for session storage (not Memcached)
+
+         Recent Learnings:
+         → Webhook signature verification prevents replay attacks
+         → PgBouncer needed at 10K+ concurrent users
+
+         Shall I expand on any of these?"
+```
+
+---
+
 ### **Keep Memory Clean**
 ```
 You: "Search Redis caching patterns"
@@ -323,9 +440,45 @@ Claude: "✓ Inactivated 47 Redis memories (soft delete, recoverable)
 
 ---
 
-## What's New in v0.8.145
+## What's New in v0.8.146
 
-![Recallium v0.8.145 Dashboard](images/s5.jpg)
+![Recallium v0.8.146 Dashboard](images/s5.jpg)
+
+### **Multi-Provider LLM Support**
+Use any LLM provider you want—no lock-in:
+
+- **5 Built-in Providers**: Anthropic, OpenAI, Google Gemini, Ollama, OpenRouter
+- **Free Local Option**: Ollama + GTE-Large = zero API costs
+- **Setup Wizard**: Test and configure providers via web UI
+- **Hot Switching**: Change providers anytime without losing data
+- **Automatic Failover**: Configure backup providers for reliability
+
+---
+
+### **Web Dashboard (18 Pages)**
+Full-featured UI at `http://localhost:9001`:
+
+- Memory Explorer with advanced search
+- Project management with briefs, docs, timeline
+- Insights visualization and pattern analysis
+- Analytics with token usage tracking
+- Document library with chunk management
+- Memory graph visualization
+- Provider configuration and testing
+
+---
+
+### **6 New MCP Tools**
+Expanded from 10 to 16 tools:
+
+- `recallium` - Magic summon: load ALL context in one call
+- `session_recap` - Resume work with recent activity summary
+- `help` - 12 topics with progressive disclosure
+- `check_setup_status` - Verify system readiness
+- `validate_intelligence_usage` - Best practices compliance
+- `intelligence_health_check` - Usage optimization tips
+
+---
 
 ### **HTTP Transport with Streamable SSE**
 Direct HTTP connections for modern IDEs—no npm client needed for most tools.
@@ -334,7 +487,7 @@ Direct HTTP connections for modern IDEs—no npm client needed for most tools.
 - Native HTTP/SSE transport for real-time streaming
 - Cursor, VS Code, Claude Code, Windsurf work out of the box
 - Optional npm client for command-only IDEs (Claude Desktop, Zed, JetBrains)
-- Single unified MCP endpoint: `http://localhost:8000/mcp`
+- Single unified MCP endpoint: `http://localhost:8001/mcp`
 
 ---
 
@@ -471,7 +624,7 @@ Know your knowledge costs. Optimize your memory footprint.
 - **Token analytics** - Usage tracking per project
 
 ### **Search Capabilities**
-- **9 memory types** - decision, rule, code-snippet, design, learning, research, progress, task, debug
+- **11 memory types** - working-notes, decision, rule, code-snippet, learning, research, discussion, progress, task, debug, design
 - **3 search modes** - semantic (concepts), keyword (exact), hybrid (both)
 - **File path filtering** - Find memories by code file patterns
 - **Linked project search** - Discover context across relationships
@@ -506,18 +659,32 @@ Know your knowledge costs. Optimize your memory footprint.
 
 ---
 
-## 10 MCP Tools
+## 16 MCP Tools
 
-1. **store_memory** - Save decisions, patterns, learnings
+### Memory Management
+1. **store_memory** - Save decisions, patterns, learnings with auto-tagging
 2. **search_memories** - Semantic/keyword/hybrid search across memories & docs
 3. **expand_memories** - Get full content + surrounding context
-4. **modify_memory** - Update, inactivate, reactivate memories
-5. **get_insights** - Meta-analysis: patterns, quality, technical debt
-6. **start_thinking** / **add_thought** - Structured reasoning sequences
-7. **manage_tasks** - Create, complete, list tasks with context
-8. **get_rules** - Load global and project-specific rules
-9. **manage_project** - Briefs, PRDs, plans, project linking
-10. **help** - Interactive guidance for tool selection and workflows
+4. **modify_memory** - Update, inactivate, reactivate with audit trail
+
+### Intelligence & Analysis
+5. **get_insights** - Meta-analysis: patterns, quality, technical debt (7 analysis types)
+6. **start_thinking** / **add_thought** - Structured reasoning with branches
+7. **get_rules** - Load global and project-specific behavioral rules
+
+### Project & Task Management
+8. **projects** - Briefs, PRDs, plans, project linking (8 actions)
+9. **tasks** - Create, complete, list tasks with linked memories
+
+### Session & Context
+10. **session_recap** - Resume work summaries, pending tasks, recent activity
+11. **recallium** - Magic summon: load ALL project context in one call
+
+### System & Help
+12. **help** - Interactive guidance with 12 topics and progressive disclosure
+13. **check_setup_status** - Verify setup completion and system readiness
+14. **validate_intelligence_usage** - Compliance scoring for best practices
+15. **intelligence_health_check** - Usage analytics and optimization tips
 
 ---
 
@@ -570,6 +737,46 @@ Efficient workflow:
 
 ---
 
+## Built-in Help System
+
+Every agent has access to comprehensive help via the `help` tool:
+
+```
+You: "help tool-selection"
+
+Agent: "Here's how to choose the right tool:
+
+        Finding information:
+        → search_memories - Find specific content by query
+        → session_recap - Resume work, see recent activity
+        → get_insights - Analyze patterns across projects
+
+        Storing information:
+        → store_memory - Save decisions, learnings, code
+        → projects - Create briefs, PRDs, plans
+        → tasks - Track action items
+        ..."
+```
+
+### 12 Help Topics
+
+| Topic | What You Learn |
+|-------|----------------|
+| `overview` | Quick start guide |
+| `setup` | Initial configuration |
+| `workflows` | Common usage patterns |
+| `tool-selection` | Decision trees for choosing tools |
+| `memory-types` | When to use each of 11 types |
+| `search-strategies` | Optimize your searches |
+| `common-mistakes` | Pitfalls to avoid |
+| `session-startup` | Best practices for starting sessions |
+| `agent-types` | IDE vs Chat agent differences |
+| `parameter-triggers` | Word → parameter mapping |
+| `negative-examples` | Before/after mistake examples |
+| `all` | Complete reference (one page) |
+
+---
+
 ## Ready to Ship Intelligence
 
 Stop explaining yourself to your IDE agent.
@@ -585,7 +792,7 @@ Your code. Your patterns. Your decisions.
 
 **Supported IDEs**: Cursor • Claude Desktop • Claude Code • VS Code • Windsurf • Roo Code • Visual Studio 2022 • JetBrains • Zed • Cline • BoltAI • Augment Code • Warp • Amazon Q • AntiGravity • and more...
 
-**Version 0.8.145** | Released January 2025 | [Installation Guide](install/README.md)
+**Version 0.8.146** | Released January 2026 | [Installation Guide](install/README.md)
 
 ---
 
