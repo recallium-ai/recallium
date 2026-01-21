@@ -1,11 +1,45 @@
 
-![Document Upload and Processing](images/recallium-splash.png)
+![Recallium - AI Memory & Intelligence Platform](images/recallium-splash.png)
 
-*Recallium: Supercharge your AI Agents with your memories*
+# Recallium
+
+**Supercharge your AI Agents with persistent memory**
 
 *Your digital developer twin—Because "Explain Our Setup Again" Gets Old Fast*
 
-*v0.8.146: January 2026*
+[![Version](https://img.shields.io/badge/version-0.8.146-blue.svg)](https://github.com/recallium-ai/recallium)
+[![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://hub.docker.com/r/manujbawa/recallium)
+[![License](https://img.shields.io/badge/license-Community-orange.svg)](LICENSE)
+[![MCP](https://img.shields.io/badge/MCP-compatible-purple.svg)](https://modelcontextprotocol.io)
+
+---
+
+## Quick Start (30 Seconds)
+
+```bash
+cd install && docker compose --env-file recallium.env up -d
+```
+
+Then visit http://localhost:9001 to complete setup. [Full installation guide →](install/README.md)
+
+**Magic Command:** Once connected, just say `"recallium"` in your IDE and your AI loads all project context instantly.
+
+---
+
+## Table of Contents
+
+- [The Problem](#the-problem-your-ai-has-amnesia)
+- [The Solution](#the-solution-your-ais-digital-hippocampus)
+- [What You Get](#what-you-get)
+- [Installation](#installation)
+- [Setup Wizard](#setup-wizard--provider-configuration)
+- [Web Dashboard](#web-dashboard)
+- [How It Works](#how-it-works) (with examples)
+- [What's New in Recallium](#whats-new-in-v08146)
+- [Complete Feature Set](#complete-feature-set)
+- [16 MCP Tools](#16-mcp-tools)
+- [Pro Tips](#pro-tips)
+- [Built-in Help System](#built-in-help-system)
 
 ---
 
@@ -52,23 +86,29 @@ AI:  "Using your battle-tested pattern from payment-service-v2:
 
 ## What You Get
 
-- **One connected memory system, across IDEs, Desktop Agents, Projects**
-Works with Cursor, Claude Desktop/Code, VS Code, Windsurf, JetBrains, Zed—any tool that speaks MCP
+### The Magic Word: `recallium`
 
-- **Cross-project intelligence**
-Lessons learned once → Applied everywhere automatically
+Just say **"recallium"** in your IDE and watch your AI instantly load:
+- Recent session activity and where you left off
+- Project briefs, PRDs, and implementation plans
+- Pending tasks that need attention
+- Global and project-specific rules
 
-- **Document knowledge base**
-Upload PDFs, docs, specs → Your AI understands your system instantly
+**One word. Full context. Zero repetition.**
 
-- **Smart project linking**
-Connect v1 → v2 → v3, share patterns across related projects
+---
 
-- **Zero-config memory**
-Auto-tags, auto-clusters, auto-learns from every interaction
+### Core Features
 
-- **Privacy-first architecture**
-Runs locally, your data never leaves your machine
+| Feature | Description |
+|---------|-------------|
+| **One Memory System** | Works across Cursor, Claude Desktop/Code, VS Code, Windsurf, JetBrains, Zed—any MCP-compatible tool |
+| **Cross-Project Intelligence** | Lessons learned once → Applied everywhere automatically |
+| **Document Knowledge Base** | Upload PDFs, docs, specs → Your AI understands your system instantly |
+| **Smart Project Linking** | Connect v1 → v2 → v3, share patterns across related projects |
+| **Zero-Config Memory** | Auto-tags, auto-clusters, auto-learns from every interaction |
+| **Privacy-First** | Runs locally, your data never leaves your machine |
+| **Free Local Option** | Use Ollama + built-in embeddings for $0 API costs |
 
 ---
 
@@ -99,7 +139,13 @@ See [install/README.md](install/README.md) for detailed setup instructions for y
 
 **First-time setup takes 2 minutes** via the web dashboard at `http://localhost:9001`
 
+![Setup Wizard - Configure your LLM provider](images/setup.png)
+*Setup Wizard: Guided configuration for first-time users*
+
 ### Choose Your LLM Provider
+
+![Select from 5 LLM providers](images/select_llms.png)
+*Provider Selection: Choose from Ollama (free), OpenAI, Anthropic, Gemini, or OpenRouter*
 
 Recallium works with **any LLM provider**—use what you already have:
 
@@ -122,6 +168,9 @@ Embeddings: GTE-Large (built-in, runs locally)
 
 ### Setup Wizard Features
 
+![Configure LLM priority and failover](images/set_llm_priority.png)
+*Provider Priority: Set up automatic failover between providers*
+
 - **Test before you commit** — Verify API keys work before saving
 - **Switch providers anytime** — Change LLM providers without losing memories
 - **Automatic failover** — Configure backup providers for reliability
@@ -141,7 +190,8 @@ Recallium uses **GTE-Large** (1024 dimensions) for embeddings:
 
 Access the full-featured UI at `http://localhost:9001`
 
-![Recallium Dashboard](images/s5.jpg)
+![Recallium Dashboard - 18 feature pages for complete memory management](images/s5.jpg)
+*Web Dashboard: Full-featured UI with 18 pages for managing your AI's memory*
 
 ### 18 Feature Pages
 
@@ -187,7 +237,8 @@ You: "Build auth for my checkout flow"
 Cursor: [Generates code using YOUR battle-tested patterns]
 ```
 
-![Memory Search Interface](images/s1.jpg)
+![Memory Search Interface - Finding past decisions and patterns across projects](images/s1.jpg)
+*Memory Explorer: Search across all your stored decisions, patterns, and learnings*
 
 ---
 
@@ -209,7 +260,8 @@ Claude: "Analyzed 89 memories across 5 projects. Pattern detected:
          and adding it later caused 2 hours of downtime in admin-api."
 ```
 
-![Cross-Project Pattern Analysis](images/s2.jpg)
+![Cross-Project Pattern Analysis - AI-powered insights across all your work](images/s2.jpg)
+*Insights Dashboard: Discover patterns, recurring issues, and recommendations across projects*
 
 ---
 
@@ -361,7 +413,8 @@ Cursor: [Generates code matching section 3 of your PDF exactly]
          → httpOnly, Secure, SameSite=Strict cookies"
 ```
 
-![Document Upload and Processing](images/s3.jpg)
+![Document Upload and Processing - Turn PDFs into searchable knowledge](images/s3.jpg)
+*Documents Page: Upload PDFs, specs, and docs that become instantly searchable by all your AI agents*
 
 ---
 
@@ -436,13 +489,15 @@ Claude: "✓ Inactivated 47 Redis memories (soft delete, recoverable)
          Your context stays current as your stack evolves."
 ```
 
-![Memory Lifecycle Management](images/s4.jpg)
+![Memory Lifecycle Management - Keep your knowledge current](images/s4.jpg)
+*Memory Management: Update, archive, or restore memories as your stack evolves*
 
 ---
 
 ## What's New in v0.8.146
 
-![Recallium v0.8.146 Dashboard](images/s5.jpg)
+![Recallium v0.8.146 Dashboard - Full-featured web interface](images/s5.jpg)
+*Dashboard: Your command center for memories, projects, insights, and analytics*
 
 ### **Multi-Provider LLM Support**
 Use any LLM provider you want—no lock-in:

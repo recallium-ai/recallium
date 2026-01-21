@@ -1,12 +1,45 @@
 # Recallium Installation Guide
 
-## What is Recallium?
-
-**Recallium** is an AI memory and project intelligence server that enables persistent, context-aware assistance directly in your IDE (Cursor, VS Code, Claude Desktop). It uses the **Model Context Protocol (MCP)** to provide tools for storing, searching, and reasoning about your code, decisions, and project knowledge—creating a digital memory that persists across sessions and grows smarter over time.
+Get Recallium running in **under 2 minutes**.
 
 ---
 
-Get Recallium running in **under 2 minutes**.
+## Quick Overview
+
+**Recallium** is an AI memory and project intelligence server that gives your IDE agents persistent memory. It uses the **Model Context Protocol (MCP)** to store, search, and reason about your code, decisions, and project knowledge—creating a digital twin that grows smarter over time.
+
+| Feature | What You Get |
+|---------|--------------|
+| **Persistent Memory** | Decisions, patterns, learnings saved across sessions |
+| **Cross-Project Intelligence** | Lessons learned once → applied everywhere |
+| **Document Knowledge Base** | Upload PDFs, specs → AI understands instantly |
+| **16 MCP Tools** | Full toolkit for IDE agents |
+| **Web Dashboard** | 18-page UI for management and insights |
+
+---
+
+## Free Local Option (No API Keys!)
+
+Want to run completely free and private? **Use Ollama + built-in embeddings:**
+
+```
+LLM: Ollama (Llama 3, Mistral, Qwen - runs locally)
+Embeddings: GTE-Large (built-in, no API needed)
+Cost: $0
+```
+
+Just install Ollama, pull a model, and select it in the Setup Wizard. Your data never leaves your machine.
+
+---
+
+## IDE Support At-a-Glance
+
+| Connection Type | IDEs | Setup |
+|-----------------|------|-------|
+| **HTTP Direct** (recommended) | Cursor, VS Code, Claude Code, Claude Desktop, Windsurf, Roo Code, Visual Studio 2022 | Just add URL to config |
+| **npm Client** (stdio→HTTP bridge) | Zed, JetBrains, Cline, BoltAI, Augment Code, Warp, Amazon Q | Install `npm install -g recallium` first |
+
+---
 
 ## Prerequisites
 
@@ -97,13 +130,40 @@ docker compose --env-file recallium.env up -d
 - **MCP API**: http://localhost:8001 (or your configured HOST_MCP_PORT)
 - **Health Check**: http://localhost:8001/health
 
+### 30-Second Verification
+
+```bash
+# 1. Check container is running
+docker ps -f name=recallium
+
+# 2. Verify health endpoint
+curl http://localhost:8001/health
+# Expected: {"status":"healthy",...}
+
+# 3. Check MCP tools are available
+curl http://localhost:8001/mcp/status
+# Expected: List of 16 available tools
+
+# 4. Open the Web UI
+open http://localhost:9001   # macOS
+# or visit http://localhost:9001 in your browser
+```
+
+If all checks pass, proceed to the Setup Wizard!
+
 ---
 
 ## Setup Wizard (First-Time Configuration)
 
 On first launch, visit **http://localhost:9001** to complete the setup wizard:
 
+![Setup Wizard - Welcome](../images/setup.png)
+*The Setup Wizard guides you through initial configuration*
+
 ### 1. Choose Your LLM Provider
+
+![Select LLM Provider](../images/select_llms.png)
+*Select from 5 supported LLM providers*
 
 Recallium works with **any LLM provider**—use what you already have:
 
@@ -121,6 +181,9 @@ The setup wizard lets you:
 - **Test API keys** before saving
 - **Verify connectivity** to your chosen provider
 - **Switch providers anytime** without losing data
+
+![Set LLM Priority](../images/set_llm_priority.png)
+*Configure provider priority and automatic failover*
 
 ### 3. Complete Setup
 
@@ -870,25 +933,37 @@ node --version
 2. **Configure IDE**: Follow the IDE Integration guides above
 3. **Start Using**: Your AI now has persistent memory across sessions!
 
-### Quick Verification
+### Your First Commands (Try These in Your IDE!)
 
-```bash
-# Check container is running
-docker ps -f name=recallium
+Once your IDE is connected, try these commands with your AI assistant:
 
-# Check health
-curl http://localhost:8001/health
+```
+"recallium"
+→ Magic summon: loads all your project context in one call
 
-# Check MCP status
-curl http://localhost:8001/mcp/status
+"Store a memory: We decided to use PostgreSQL because..."
+→ Saves your decision with auto-tagging
+
+"Search my memories about authentication"
+→ Finds past decisions, patterns, learnings
+
+"What was I working on last week?"
+→ Session recap with recent activity
+
+"Get insights about my database patterns"
+→ Cross-project pattern analysis
 ```
 
 ### What You Can Do Now
 
-- **Store memories**: Decisions, patterns, learnings automatically preserved
-- **Search across projects**: Find past context instantly
-- **Get insights**: Pattern analysis across your work
-- **Link projects**: Share knowledge between related projects
-- **Upload documents**: PDFs, docs become searchable knowledge
+| Capability | Example |
+|------------|---------|
+| **Store memories** | Decisions, patterns, learnings automatically preserved |
+| **Search across projects** | Find past context instantly |
+| **Get insights** | Pattern analysis across your work |
+| **Link projects** | Share knowledge between related projects |
+| **Upload documents** | PDFs, docs become searchable knowledge |
+| **Manage tasks** | Track TODOs with linked memories |
+| **Structured thinking** | Document complex problem-solving |
 
 ---
