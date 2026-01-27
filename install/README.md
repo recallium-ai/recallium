@@ -147,7 +147,7 @@ Edit `recallium.env` **before** starting:
 
 ```bash
 HOST_UI_PORT=9001        # Web UI: http://localhost:9001
-HOST_MCP_PORT=8001       # MCP API: http://localhost:8001
+HOST_API_PORT=8001       # MCP API: http://localhost:8001
 HOST_POSTGRES_PORT=5433  # PostgreSQL: localhost:5433
 VOLUME_NAME=recallium-v1 # Data volume name
 ```
@@ -156,16 +156,16 @@ VOLUME_NAME=recallium-v1 # Data volume name
 | Your Machine | Container | Service |
 |--------------|-----------|---------|
 | HOST_UI_PORT (9001) | 9000 | Web UI |
-| HOST_MCP_PORT (8001) | 8000 | MCP API |
+| HOST_API_PORT (8001) | 8000 | MCP API |
 | HOST_POSTGRES_PORT (5433) | 5432 | PostgreSQL |
 
-**Important:** If you change `HOST_MCP_PORT`, update your IDE's MCP configuration to match.
+**Important:** If you change `HOST_API_PORT`, update your IDE's MCP configuration to match.
 
 ---
 
 **That's it!** Access Recallium at:
 - **Web UI**: http://localhost:9001 (or your configured HOST_UI_PORT)
-- **MCP API**: http://localhost:8001 (or your configured HOST_MCP_PORT)
+- **MCP API**: http://localhost:8001 (or your configured HOST_API_PORT)
 - **Health Check**: http://localhost:8001/health
 
 ### 30-Second Verification
@@ -274,7 +274,7 @@ The Setup Wizard lets you:
 ### Ports (Host Mappings)
 ```bash
 HOST_UI_PORT=9001        # Access UI on your machine
-HOST_MCP_PORT=8001       # Access MCP API on your machine
+HOST_API_PORT=8001       # Access MCP API on your machine
 HOST_POSTGRES_PORT=5433  # Access PostgreSQL on your machine
 ```
 
@@ -728,7 +728,7 @@ Add this to your Amazon Q Developer CLI configuration file. See [Amazon Q Develo
 
 </details>
 
-**Note:** If you changed `HOST_MCP_PORT` in `recallium.env` from the default `8001`, update the URL in your IDE config accordingly.
+**Note:** If you changed `HOST_API_PORT` in `recallium.env` from the default `8001`, update the URL in your IDE config accordingly.
 
 ## Management Commands
 
@@ -823,12 +823,12 @@ OLLAMA_HOST=http://your-ollama-host:11434
 
 Edit `recallium.env` and change the HOST_* port mappings, then restart:
 ```bash
-# Edit install/recallium.env - change HOST_UI_PORT, HOST_MCP_PORT, etc.
+# Edit install/recallium.env - change HOST_UI_PORT, HOST_API_PORT, etc.
 docker compose down
 docker compose --env-file recallium.env up -d
 ```
 
-**Remember:** If you change `HOST_MCP_PORT`, you must also update your IDE config to use the new port.
+**Remember:** If you change `HOST_API_PORT`, you must also update your IDE config to use the new port.
 
 </details>
 

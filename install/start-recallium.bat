@@ -50,7 +50,7 @@ for /f "usebackq tokens=1,* delims==" %%a in ("%ENV_FILE%") do (
 
 REM Use values from env file (with defaults)
 if "%VOLUME_NAME%"=="" set VOLUME_NAME=recallium-v1
-if "%HOST_MCP_PORT%"=="" set HOST_MCP_PORT=8001
+if "%HOST_API_PORT%"=="" set HOST_API_PORT=8001
 if "%HOST_UI_PORT%"=="" set HOST_UI_PORT=9001
 if "%HOST_POSTGRES_PORT%"=="" set HOST_POSTGRES_PORT=5433
 
@@ -66,7 +66,7 @@ docker run -d ^
     --name %CONTAINER_NAME% ^
     --restart unless-stopped ^
     --env-file %ENV_FILE% ^
-    -p %HOST_MCP_PORT%:8000 ^
+    -p %HOST_API_PORT%:8000 ^
     -p %HOST_UI_PORT%:9000 ^
     -p %HOST_POSTGRES_PORT%:5432 ^
     -v %VOLUME_NAME%:/data ^
@@ -86,8 +86,8 @@ echo   Recallium is running!
 echo ==============================================
 echo.
 echo   Web UI:  http://localhost:%HOST_UI_PORT%
-echo   MCP API: http://localhost:%HOST_MCP_PORT%/mcp
-echo   Health:  http://localhost:%HOST_MCP_PORT%/health
+echo   MCP API: http://localhost:%HOST_API_PORT%/mcp
+echo   Health:  http://localhost:%HOST_API_PORT%/health
 echo.
 echo   Logs:    docker logs -f %CONTAINER_NAME%
 echo   Stop:    docker stop %CONTAINER_NAME%

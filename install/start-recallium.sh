@@ -45,7 +45,7 @@ set +a
 
 # Use values from env file (with defaults)
 VOLUME_NAME="${VOLUME_NAME:-recallium-v1}"
-API_PORT="${HOST_MCP_PORT:-8001}"
+API_PORT="${HOST_API_PORT:-8001}"
 UI_PORT="${HOST_UI_PORT:-9001}"
 DB_PORT="${HOST_POSTGRES_PORT:-5433}"
 
