@@ -72,8 +72,8 @@ docker run -d \
     "$IMAGE"
 
 echo ""
-echo "[Recallium] Started! Waiting for services..."
-sleep 5
+echo "[Recallium] Started! Waiting for services to initialize..."
+sleep 15
 
 echo ""
 echo "=============================================="

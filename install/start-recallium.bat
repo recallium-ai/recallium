@@ -54,6 +54,23 @@ if "%HOST_API_PORT%"=="" set HOST_API_PORT=8001
 if "%HOST_UI_PORT%"=="" set HOST_UI_PORT=9001
 if "%HOST_POSTGRES_PORT%"=="" set HOST_POSTGRES_PORT=5433
 
+REM Detect host IP address for Ollama (Windows requires actual IP, not localhost)
+echo [Recallium] Detecting host IP address for Ollama...
+for /f "tokens=*" %%i in ('powershell -Command "(Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notlike '*Loopback*' -and $_.IPAddress -notlike '127.*' -and $_.IPAddress -notlike '169.*' } | Select-Object -First 1).IPAddress"') do set HOST_IP=%%i
+
+if not "%HOST_IP%"=="" (
+    echo [Recallium] Detected IP: %HOST_IP%
+    echo [Recallium] Updating Ollama configuration in %ENV_FILE%...
+
+    REM Create a temp file with updated OLLAMA settings
+    powershell -Command "(Get-Content '%ENV_FILE%') -replace 'OLLAMA_HOST=.*', 'OLLAMA_HOST=http://%HOST_IP%:11434' -replace 'OLLAMA_BASE_URL=.*', 'OLLAMA_BASE_URL=http://%HOST_IP%:11434' | Set-Content '%ENV_FILE%'"
+
+    echo [Recallium] Updated OLLAMA_HOST and OLLAMA_BASE_URL to http://%HOST_IP%:11434
+) else (
+    echo [Warning] Could not detect host IP. Using default Ollama settings.
+    echo           If Ollama connection fails, manually set OLLAMA_HOST in %ENV_FILE%
+)
+
 REM Stop existing container
 docker stop %CONTAINER_NAME% >nul 2>&1
 docker rm %CONTAINER_NAME% >nul 2>&1
@@ -77,8 +94,8 @@ docker run -d ^
     %IMAGE%
 
 echo.
-echo [Recallium] Started! Waiting for services...
-timeout /t 5 /nobreak >nul
+echo [Recallium] Started! Waiting for services to initialize (15 seconds)...
+timeout /t 15 /nobreak >nul
 
 echo.
 echo ==============================================

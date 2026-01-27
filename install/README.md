@@ -117,8 +117,9 @@ start-recallium.bat
 2. Verify `recallium.env` exists
 3. Stop and remove any existing container
 4. Pull the latest image from Docker Hub
-5. Start the container with proper configuration
-6. Display access URLs when ready
+5. **Windows only:** Auto-detect host IP and update Ollama configuration
+6. Start the container with proper configuration
+7. Display access URLs and open browser when ready
 
 ---
 
@@ -814,6 +815,52 @@ If Ollama is running on a different host:
 ```bash
 # Edit install/recallium.env
 OLLAMA_HOST=http://your-ollama-host:11434
+```
+
+</details>
+
+<details>
+<summary><b>Ollama on Windows (Special Configuration Required)</b></summary>
+
+On Windows, Docker containers cannot use `localhost` or `host.docker.internal` to reach Ollama. You must configure Ollama to bind to all interfaces and use your machine's IP address.
+
+**Step 1: Configure Ollama Environment Variable**
+
+1. Open "Edit the system environment variables" (search in Start menu)
+2. Click "Environment Variables"
+3. Under "System variables" → Click "New"
+4. Variable name: `OLLAMA_HOST`
+5. Variable value: `0.0.0.0:11434`
+6. Click OK → OK
+7. **Restart Ollama** (close and reopen)
+
+**Step 2: Add Windows Firewall Rule**
+
+Open Command Prompt or PowerShell as Administrator and run:
+
+```cmd
+netsh advfirewall firewall add rule name="Ollama" dir=in action=allow program="C:\Users\<YOUR_USERNAME>\AppData\Local\Programs\Ollama\ollama.exe" enable=yes profile=private
+```
+
+Replace `<YOUR_USERNAME>` with your Windows username.
+
+**Step 3: Update recallium.env with Your IP**
+
+The `start-recallium.bat` script will automatically detect your IP address and update the env file. Alternatively, manually find your IP and edit `recallium.env`:
+
+```bash
+# Find your IP address
+ipconfig | findstr "IPv4"
+
+# Edit recallium.env with your IP (example: 192.168.1.46)
+OLLAMA_HOST=http://192.168.1.46:11434
+OLLAMA_BASE_URL=http://192.168.1.46:11434
+```
+
+**Verify Ollama is Accessible:**
+
+```cmd
+curl http://YOUR_IP:11434/api/version
 ```
 
 </details>
