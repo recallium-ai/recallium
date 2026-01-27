@@ -8,7 +8,7 @@
 *Your digital developer twin—Because "Explain Our Setup Again" Gets Old Fast*
 
 [![Version](https://img.shields.io/badge/version-0.8.146-blue.svg)](https://github.com/recallium-ai/recallium)
-[![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://hub.docker.com/r/manujbawa/recallium)
+[![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://hub.docker.com/r/recalliumai/recallium)
 [![License](https://img.shields.io/badge/license-Community-orange.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-compatible-purple.svg)](https://modelcontextprotocol.io)
 
@@ -17,7 +17,9 @@
 ## Quick Start (30 Seconds)
 
 ```bash
-cd install && docker compose --env-file recallium.env up -d
+cd install
+docker compose --env-file recallium.env pull
+docker compose --env-file recallium.env up -d
 ```
 
 Then visit http://localhost:9001 to complete setup. [Full installation guide →](install/README.md)
@@ -118,8 +120,9 @@ Just say **"recallium"** in your IDE and watch your AI instantly load:
 
 **TL;DR:**
 ```bash
-# 1. Start Recallium server
+# 1. Pull and start Recallium server
 cd install
+docker compose --env-file recallium.env pull
 docker compose --env-file recallium.env up -d
 
 # 2. Add to your IDE (see install guide for your specific IDE)
@@ -190,8 +193,8 @@ Recallium uses **GTE-Large** (1024 dimensions) for embeddings:
 
 Access the full-featured UI at `http://localhost:9001`
 
-![Recallium Dashboard - 18 feature pages for complete memory management](images/s5.jpg)
-*Web Dashboard: Full-featured UI with 18 pages for managing your AI's memory*
+![Recallium Dashboard - System overview with key metrics](images/dashboard.png)
+*Dashboard: Your command center with system stats, recent activity, and quick insights*
 
 ### 18 Feature Pages
 
@@ -208,6 +211,14 @@ Access the full-featured UI at `http://localhost:9001`
 | **Thinking** | View reasoning sequences, explore branches |
 | **Providers** | Configure LLM & embedding providers |
 | **Admin** | System logs, configuration, maintenance |
+
+### Key Pages Showcase
+
+![Projects Page - Manage your knowledge repositories](images/projects_page.png)
+*Projects Page: Central hub for managing knowledge repositories with activity indicators, memory counts, and project linking*
+
+![Memory Graph - Visual knowledge exploration](images/memory_graph.png)
+*Memory Graph: Interactive force-directed visualization showing relationships between memories, clusters, and tags*
 
 ---
 
@@ -496,7 +507,7 @@ Claude: "✓ Inactivated 47 Redis memories (soft delete, recoverable)
 
 ## What's New in v0.8.146
 
-![Recallium v0.8.146 Dashboard - Full-featured web interface](images/s5.jpg)
+![Recallium v0.8.146 - Full-featured web dashboard](images/dashboard.png)
 *Dashboard: Your command center for memories, projects, insights, and analytics*
 
 ### **Multi-Provider LLM Support**
@@ -855,7 +866,7 @@ Your code. Your patterns. Your decisions.
 
 - **[Installation Guide](install/README.md)** - Complete setup for all IDEs
 - **[GitHub Repository](https://github.com/recallium-ai/recallium)** - Source code and issues
-- **[Docker Hub](https://hub.docker.com/r/manujbawa/recallium)** - Official Docker images
+- **[Docker Hub](https://hub.docker.com/r/recalliumai/recallium)** - Official Docker images
 
 ---
 

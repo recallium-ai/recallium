@@ -122,7 +122,8 @@ Update the `RECALLIUM_SERVER_URL` in your IDE's config to match your custom port
 
 ```bash
 cd install
-docker compose --env-file recallium.env up -d
+docker compose --env-file recallium.env pull    # Download latest image
+docker compose --env-file recallium.env up -d   # Start container
 ```
 
 **That's it!** Access Recallium at:
@@ -188,6 +189,9 @@ The setup wizard lets you:
 ### 3. Complete Setup
 
 Once configured, the MCP tools become available to all connected IDEs.
+
+![Recallium Dashboard after setup](../images/dashboard.png)
+*After setup: Your dashboard shows system stats, recent activity, and quick access to all features*
 
 ### Free Local Setup (No API Keys Required)
 

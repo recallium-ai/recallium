@@ -1,0 +1,33 @@
+services:
+  recallium:
+    image: recalliumai/recallium:latest
+    container_name: recallium
+    restart: unless-stopped
+    ports:
+      - "${HOST_UI_PORT:-9001}:9001"      # Web UI
+      - "${HOST_MCP_PORT:-8001}:8001"     # MCP API
+      - "${HOST_POSTGRES_PORT:-5433}:5432" # PostgreSQL (external access)
+    volumes:
+      - recallium_data:/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-recallium_password}
+      - OLLAMA_HOST=${OLLAMA_HOST:-http://host.docker.internal:11434}
+      - CHUNK_SIZE_TOKENS=${CHUNK_SIZE_TOKENS:-400}
+      - BATCH_SIZE=${BATCH_SIZE:-20}
+      - MAX_CONCURRENT=${MAX_CONCURRENT:-10}
+      - QUEUE_WORKERS=${QUEUE_WORKERS:-3}
+      - ENABLE_PATTERN_MATCHING=${ENABLE_PATTERN_MATCHING:-true}
+      - ENABLE_UNIFIED_INSIGHTS=${ENABLE_UNIFIED_INSIGHTS:-true}
+      - REAL_TIME_PROCESSING=${REAL_TIME_PROCESSING:-true}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  recallium_data:
+    name: recallium_data
