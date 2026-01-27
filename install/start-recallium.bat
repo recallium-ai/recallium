@@ -93,7 +93,9 @@ echo   Logs:    docker logs -f %CONTAINER_NAME%
 echo   Stop:    docker stop %CONTAINER_NAME%
 echo   Restart: docker restart %CONTAINER_NAME%
 echo.
-echo   Next: Visit the Web UI to complete setup!
+echo   Opening Web UI in your browser...
 echo.
+
+start http://localhost:%HOST_UI_PORT%
 
 endlocal

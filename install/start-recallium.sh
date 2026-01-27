@@ -88,5 +88,14 @@ echo "  Logs:    docker logs -f $CONTAINER_NAME"
 echo "  Stop:    docker stop $CONTAINER_NAME"
 echo "  Restart: docker restart $CONTAINER_NAME"
 echo ""
-echo "  Next: Visit the Web UI to complete setup!"
+echo "  Opening Web UI in your browser..."
 echo ""
+
+# Open browser (works on macOS and Linux)
+if command -v open &> /dev/null; then
+    open "http://localhost:${UI_PORT}"
+elif command -v xdg-open &> /dev/null; then
+    xdg-open "http://localhost:${UI_PORT}"
+else
+    echo "  Please open http://localhost:${UI_PORT} in your browser"
+fi
