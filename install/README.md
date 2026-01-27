@@ -95,36 +95,73 @@ npm install -g recallium
 
 ## Quick Start
 
-### Optional: Configure Ports (Before Starting)
+### Option 1: One-Click Start Scripts (Easiest)
 
-If you need to change default ports (e.g., port 9000 is already in use), edit `recallium.env` **before** running docker compose:
+The start scripts handle everything automatically: pull image, cleanup, and launch.
 
+**Linux/macOS:**
 ```bash
-# Edit install/recallium.env and change HOST port mappings:
-HOST_UI_PORT=9001        # Access UI at localhost:9001
-HOST_MCP_PORT=8001       # Access MCP API at localhost:8001
-HOST_POSTGRES_PORT=5433  # Access PostgreSQL at localhost:5433
+cd install
+chmod +x start-recallium.sh
+./start-recallium.sh
 ```
 
-**How it works:** Docker maps your host machine ports to fixed container ports:
-- `HOST_UI_PORT=9001` → Container internal port 9001 maps to your localhost:9001
-- Container uses internal ports (MCP:8001, UI:9001, DB:5432)
-- You can configure the **HOST_*** ports to avoid conflicts on your machine
+**Windows:**
+```bash
+cd install
+start-recallium.bat
+```
 
-**Important:** If you change `HOST_MCP_PORT` from the default `8001`, you **must also update** your IDE's MCP client configuration to use the new port. See the `mcp-config/` directory for your IDE:
-- `mcp-config/cursor/` - Cursor IDE configuration
-- `mcp-config/vscode/` - VS Code configuration
-- `mcp-config/claude-code/` - Claude Desktop configuration
+**What the scripts do:**
+1. Check Docker is installed and running
+2. Verify `recallium.env` exists
+3. Stop and remove any existing container
+4. Pull the latest image from Docker Hub
+5. Start the container with proper configuration
+6. Display access URLs when ready
 
-Update the `RECALLIUM_SERVER_URL` in your IDE's config to match your custom port (e.g., `http://localhost:8001`).
+---
 
-### Start Recallium
+### Option 2: Docker Compose (More Control)
+
+Use docker-compose if you want more control or need to customize the setup.
 
 ```bash
 cd install
 docker compose --env-file recallium.env pull    # Download latest image
 docker compose --env-file recallium.env up -d   # Start container
 ```
+
+**Advantages of docker-compose:**
+- Easier to customize (edit `docker-compose.yml`)
+- Standard Docker workflow
+- Better for integration with other services
+
+---
+
+### Port Configuration (Optional)
+
+Default ports work for most users. Only change if you have conflicts.
+
+Edit `recallium.env` **before** starting:
+
+```bash
+HOST_UI_PORT=9001        # Web UI: http://localhost:9001
+HOST_MCP_PORT=8001       # MCP API: http://localhost:8001
+HOST_POSTGRES_PORT=5433  # PostgreSQL: localhost:5433
+VOLUME_NAME=recallium-v1 # Data volume name
+```
+
+**Port mapping:**
+| Your Machine | Container | Service |
+|--------------|-----------|---------|
+| HOST_UI_PORT (9001) | 9000 | Web UI |
+| HOST_MCP_PORT (8001) | 8000 | MCP API |
+| HOST_POSTGRES_PORT (5433) | 5432 | PostgreSQL |
+
+**Important:** If you change `HOST_MCP_PORT`, update your IDE's MCP configuration to match.
+
+---
 
 **That's it!** Access Recallium at:
 - **Web UI**: http://localhost:9001 (or your configured HOST_UI_PORT)

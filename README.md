@@ -16,6 +16,14 @@
 
 ## Quick Start (30 Seconds)
 
+**Option 1: Start Scripts (Easiest)**
+```bash
+cd install
+./start-recallium.sh    # Linux/macOS
+start-recallium.bat     # Windows
+```
+
+**Option 2: Docker Compose**
 ```bash
 cd install
 docker compose --env-file recallium.env pull
@@ -120,17 +128,18 @@ Just say **"recallium"** in your IDE and watch your AI instantly load:
 
 **TL;DR:**
 ```bash
-# 1. Pull and start Recallium server
 cd install
+
+# Option 1: One-click start (pulls latest, handles cleanup)
+./start-recallium.sh      # Linux/macOS
+start-recallium.bat       # Windows
+
+# Option 2: Docker Compose (more control)
 docker compose --env-file recallium.env pull
 docker compose --env-file recallium.env up -d
-
-# 2. Add to your IDE (see install guide for your specific IDE)
-# HTTP-capable: Cursor, VS Code, Claude Code, Windsurf, Roo Code, etc.
-# Command-based: Claude Desktop, Zed, JetBrains, etc. (requires npm client)
-
-# 3. Start coding with persistent memory!
 ```
+
+Then configure your IDE (see install guide) and start coding with persistent memory!
 
 **Supported IDEs**: Cursor • Claude Desktop • Claude Code • VS Code • Windsurf • Roo Code • Visual Studio 2022 • JetBrains • Zed • Cline • BoltAI • Augment Code • Warp • Amazon Q • AntiGravity • and more...
 
@@ -505,9 +514,9 @@ Claude: "✓ Inactivated 47 Redis memories (soft delete, recoverable)
 
 ---
 
-## What's New in v0.8.146
+## What's New in v0.8.155
 
-![Recallium v0.8.146 - Full-featured web dashboard](images/dashboard.png)
+![Recallium v0.8.155 - Full-featured web dashboard](images/dashboard.png)
 *Dashboard: Your command center for memories, projects, insights, and analytics*
 
 ### **Multi-Provider LLM Support**

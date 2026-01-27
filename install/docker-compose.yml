@@ -4,11 +4,14 @@ services:
     container_name: recallium
     restart: unless-stopped
     ports:
-      - "${HOST_UI_PORT:-9001}:9001"      # Web UI
-      - "${HOST_MCP_PORT:-8001}:8001"     # MCP API
-      - "${HOST_POSTGRES_PORT:-5433}:5432" # PostgreSQL (external access)
+      - "${HOST_UI_PORT:-9001}:9000"       # Web UI (internal 9000)
+      - "${HOST_MCP_PORT:-8001}:8000"      # MCP API (internal 8000)
+      - "${HOST_POSTGRES_PORT:-5433}:5432" # PostgreSQL
     volumes:
-      - recallium_data:/data
+      - data:/data
+      - wal:/wal
+      - docs:/documents
+      - secrets:/secrets
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-recallium_password}
       - OLLAMA_HOST=${OLLAMA_HOST:-http://host.docker.internal:11434}
@@ -22,12 +25,18 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
 
 volumes:
-  recallium_data:
-    name: recallium_data
+  data:
+    name: ${VOLUME_NAME:-recallium-v1}
+  wal:
+    name: ${VOLUME_NAME:-recallium-v1}-wal
+  docs:
+    name: ${VOLUME_NAME:-recallium-v1}-docs
+  secrets:
+    name: ${VOLUME_NAME:-recallium-v1}-secrets
