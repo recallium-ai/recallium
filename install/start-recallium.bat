@@ -73,6 +73,7 @@ docker run -d ^
     -v %VOLUME_NAME%-wal:/wal ^
     -v %VOLUME_NAME%-docs:/documents ^
     -v %VOLUME_NAME%-secrets:/secrets ^
+    --add-host=host.docker.internal:host-gateway ^
     %IMAGE%
 
 echo.
