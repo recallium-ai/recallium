@@ -61,9 +61,9 @@ docker run -d \
     --name "$CONTAINER_NAME" \
     --restart unless-stopped \
     --env-file "$ENV_FILE" \
-    -p "${API_PORT}":8000 \
-    -p "${UI_PORT}":9000 \
-    -p "${DB_PORT}":5432 \
+    -p "[::]:${API_PORT}:8000" \
+    -p "[::]:${UI_PORT}:9000" \
+    -p "[::]:${DB_PORT}:5432" \
     -v "${VOLUME_NAME}":/data \
     -v "${VOLUME_NAME}-wal":/wal \
     -v "${VOLUME_NAME}-docs":/documents \

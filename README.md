@@ -16,7 +16,7 @@
 
 ## Quick Start
 
-### macOS / Linux (30 Seconds)
+### macOS (30 Seconds)
 
 ```bash
 cd install
@@ -25,6 +25,20 @@ chmod +x start-recallium.sh
 ```
 
 That's it! Visit http://localhost:9001 to complete setup.
+
+---
+
+### Linux (30 Seconds)
+
+```bash
+cd install
+chmod +x start-recallium.sh
+./start-recallium.sh
+```
+
+> **Note:** The scripts use IPv6 dual-stack binding for Safari compatibility. If you encounter port binding errors on Linux, Docker may not have IPv6 enabled. Either enable IPv6 in Docker (`/etc/docker/daemon.json` → `"ipv6": true`) or edit the script to use `0.0.0.0` instead of `[::]` for port bindings.
+
+Visit http://localhost:9001 to complete setup.
 
 ---
 

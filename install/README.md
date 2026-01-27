@@ -95,7 +95,7 @@ npm install -g recallium
 
 ## Quick Start
 
-### macOS / Linux (30 Seconds)
+### macOS (30 Seconds)
 
 ```bash
 cd install
@@ -108,10 +108,37 @@ chmod +x start-recallium.sh
 2. Verify `recallium.env` exists
 3. Stop and remove any existing container
 4. Pull the latest image from Docker Hub
-5. Start the container with proper configuration
+5. Start the container with IPv6 dual-stack (Safari compatible)
 6. Open browser when ready
 
 That's it! Visit http://localhost:9001 to complete setup.
+
+---
+
+### Linux (30 Seconds)
+
+```bash
+cd install
+chmod +x start-recallium.sh
+./start-recallium.sh
+```
+
+Visit http://localhost:9001 to complete setup.
+
+> **IPv6 Note:** The scripts use IPv6 dual-stack port binding (`[::]`) for Safari compatibility on macOS. If you encounter port binding errors on Linux, your Docker daemon may not have IPv6 enabled. Two options:
+>
+> **Option A:** Enable IPv6 in Docker
+> ```bash
+> # Edit /etc/docker/daemon.json
+> { "ipv6": true }
+> # Then: sudo systemctl restart docker
+> ```
+>
+> **Option B:** Use IPv4-only binding (edit start-recallium.sh)
+> ```bash
+> # Change: -p "[::]:${PORT}:9000"
+> # To:     -p "${PORT}:9000"
+> ```
 
 ---
 

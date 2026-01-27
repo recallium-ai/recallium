@@ -4,9 +4,10 @@ services:
     container_name: ${CONTAINER_NAME:-recallium}
     restart: unless-stopped
     ports:
-      - "${HOST_UI_PORT:-9001}:9000"       # Web UI (internal 9000)
-      - "${HOST_API_PORT:-8001}:8000"      # MCP API (internal 8000)
-      - "${HOST_POSTGRES_PORT:-5433}:5432" # PostgreSQL
+      # Using [::] for IPv6 dual-stack (supports both IPv4 and IPv6, fixes Safari localhost issue)
+      - "[::]:${HOST_UI_PORT:-9001}:9000"       # Web UI (internal 9000)
+      - "[::]:${HOST_API_PORT:-8001}:8000"      # MCP API (internal 8000)
+      - "[::]:${HOST_POSTGRES_PORT:-5433}:5432" # PostgreSQL
     volumes:
       - data:/data
       - wal:/wal

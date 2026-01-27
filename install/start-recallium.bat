@@ -83,9 +83,9 @@ docker run -d ^
     --name %CONTAINER_NAME% ^
     --restart unless-stopped ^
     --env-file %ENV_FILE% ^
-    -p %HOST_API_PORT%:8000 ^
-    -p %HOST_UI_PORT%:9000 ^
-    -p %HOST_POSTGRES_PORT%:5432 ^
+    -p "[::]:"%HOST_API_PORT%":8000" ^
+    -p "[::]:"%HOST_UI_PORT%":9000" ^
+    -p "[::]:"%HOST_POSTGRES_PORT%":5432" ^
     -v %VOLUME_NAME%:/data ^
     -v %VOLUME_NAME%-wal:/wal ^
     -v %VOLUME_NAME%-docs:/documents ^
