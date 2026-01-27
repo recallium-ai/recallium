@@ -14,23 +14,56 @@
 
 ---
 
-## Quick Start (30 Seconds)
+## Quick Start
 
-**Option 1: Start Scripts (Easiest)**
+### macOS / Linux (30 Seconds)
+
 ```bash
 cd install
-./start-recallium.sh    # Linux/macOS
-start-recallium.bat     # Windows
+chmod +x start-recallium.sh
+./start-recallium.sh
 ```
 
-**Option 2: Docker Compose**
+That's it! Visit http://localhost:9001 to complete setup.
+
+---
+
+### Windows (2 Minutes)
+
+Windows requires additional Ollama configuration for Docker connectivity.
+
+**Step 1: Configure Ollama (one-time setup)**
+
+1. Open "Edit the system environment variables" (search in Start menu)
+2. Click "Environment Variables" → Under "System variables" → Click "New"
+3. Variable name: `OLLAMA_HOST` / Variable value: `0.0.0.0:11434`
+4. Click OK → OK → **Restart Ollama**
+
+**Step 2: Add Firewall Rule (run as Administrator)**
+```cmd
+netsh advfirewall firewall add rule name="Ollama" dir=in action=allow program="C:\Users\<YOUR_USERNAME>\AppData\Local\Programs\Ollama\ollama.exe" enable=yes profile=private
+```
+
+**Step 3: Start Recallium**
+```cmd
+cd install
+start-recallium.bat
+```
+
+The script auto-detects your IP and configures Ollama connectivity. Visit http://localhost:9001 to complete setup.
+
+---
+
+### Alternative: Docker Compose
+
+For more control, use docker-compose directly:
 ```bash
 cd install
 docker compose --env-file recallium.env pull
 docker compose --env-file recallium.env up -d
 ```
 
-Then visit http://localhost:9001 to complete setup. [Full installation guide →](install/README.md)
+[Full installation guide →](install/README.md)
 
 **Magic Command:** Once connected, just say `"recallium"` in your IDE and your AI loads all project context instantly.
 

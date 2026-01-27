@@ -95,35 +95,71 @@ npm install -g recallium
 
 ## Quick Start
 
-### Option 1: One-Click Start Scripts (Easiest)
+### macOS / Linux (30 Seconds)
 
-The start scripts handle everything automatically: pull image, cleanup, and launch.
-
-**Linux/macOS:**
 ```bash
 cd install
 chmod +x start-recallium.sh
 ./start-recallium.sh
 ```
 
-**Windows:**
-```bash
-cd install
-start-recallium.bat
-```
-
-**What the scripts do:**
+**What the script does:**
 1. Check Docker is installed and running
 2. Verify `recallium.env` exists
 3. Stop and remove any existing container
 4. Pull the latest image from Docker Hub
-5. **Windows only:** Auto-detect host IP and update Ollama configuration
-6. Start the container with proper configuration
-7. Display access URLs and open browser when ready
+5. Start the container with proper configuration
+6. Open browser when ready
+
+That's it! Visit http://localhost:9001 to complete setup.
 
 ---
 
-### Option 2: Docker Compose (More Control)
+### Windows (2 Minutes)
+
+Windows requires additional Ollama configuration for Docker connectivity.
+
+**Step 1: Configure Ollama Environment Variable (one-time setup)**
+
+1. Open "Edit the system environment variables" (search in Start menu)
+2. Click "Environment Variables"
+3. Under "System variables" → Click "New"
+4. Variable name: `OLLAMA_HOST`
+5. Variable value: `0.0.0.0:11434`
+6. Click OK → OK
+7. **Restart Ollama** (close and reopen the application)
+
+**Step 2: Add Windows Firewall Rule (one-time setup)**
+
+Open Command Prompt or PowerShell **as Administrator** and run:
+
+```cmd
+netsh advfirewall firewall add rule name="Ollama" dir=in action=allow program="C:\Users\<YOUR_USERNAME>\AppData\Local\Programs\Ollama\ollama.exe" enable=yes profile=private
+```
+
+Replace `<YOUR_USERNAME>` with your Windows username.
+
+**Step 3: Start Recallium**
+
+```cmd
+cd install
+start-recallium.bat
+```
+
+**What the script does:**
+1. Check Docker is installed and running
+2. Verify `recallium.env` exists
+3. Stop and remove any existing container
+4. Pull the latest image from Docker Hub
+5. **Auto-detect your IP address** and update `OLLAMA_HOST`/`OLLAMA_BASE_URL` in `recallium.env`
+6. Start the container with proper configuration
+7. Open browser when ready
+
+Visit http://localhost:9001 to complete setup.
+
+---
+
+### Alternative: Docker Compose (More Control)
 
 Use docker-compose if you want more control or need to customize the setup.
 
@@ -132,6 +168,13 @@ cd install
 docker compose --env-file recallium.env pull    # Download latest image
 docker compose --env-file recallium.env up -d   # Start container
 ```
+
+> **Windows users:** If using docker-compose instead of `start-recallium.bat`, you must manually update `recallium.env` with your IP address:
+> ```
+> OLLAMA_HOST=http://YOUR_IP:11434
+> OLLAMA_BASE_URL=http://YOUR_IP:11434
+> ```
+> Find your IP with: `ipconfig | findstr "IPv4"`
 
 **Advantages of docker-compose:**
 - Easier to customize (edit `docker-compose.yml`)
