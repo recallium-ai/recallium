@@ -80,9 +80,9 @@ echo "=============================================="
 echo "  Recallium is running!"
 echo "=============================================="
 echo ""
-echo "  Web UI:  http://localhost:${UI_PORT}"
-echo "  MCP API: http://localhost:${API_PORT}/mcp"
-echo "  Health:  http://localhost:${API_PORT}/health"
+echo "  Web UI:  http://127.0.0.1:${UI_PORT}"
+echo "  MCP API: http://127.0.0.1:${API_PORT}/mcp"
+echo "  Health:  http://127.0.0.1:${API_PORT}/health"
 echo ""
 echo "  Logs:    docker logs -f $CONTAINER_NAME"
 echo "  Stop:    docker stop $CONTAINER_NAME"
@@ -93,9 +93,9 @@ echo ""
 
 # Open browser (works on macOS and Linux)
 if command -v open &> /dev/null; then
-    open "http://localhost:${UI_PORT}"
+    open "http://127.0.0.1:${UI_PORT}"
 elif command -v xdg-open &> /dev/null; then
-    xdg-open "http://localhost:${UI_PORT}"
+    xdg-open "http://127.0.0.1:${UI_PORT}"
 else
-    echo "  Please open http://localhost:${UI_PORT} in your browser"
+    echo "  Please open http://127.0.0.1:${UI_PORT} in your browser"
 fi
