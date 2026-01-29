@@ -54,7 +54,7 @@ if "%HOST_API_PORT%"=="" set HOST_API_PORT=8001
 if "%HOST_UI_PORT%"=="" set HOST_UI_PORT=9001
 if "%HOST_POSTGRES_PORT%"=="" set HOST_POSTGRES_PORT=5433
 
-REM Detect host IP address for Ollama (Windows requires actual IP, not localhost)
+REM Detect host IP address for Ollama (Windows requires actual IP, not 127.0.0.1)
 echo [Recallium] Detecting host IP address for Ollama...
 for /f "tokens=*" %%i in ('powershell -Command "(Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notlike '*Loopback*' -and $_.IPAddress -notlike '127.*' -and $_.IPAddress -notlike '169.*' } | Select-Object -First 1).IPAddress"') do set HOST_IP=%%i
 
@@ -83,9 +83,9 @@ docker run -d ^
     --name %CONTAINER_NAME% ^
     --restart unless-stopped ^
     --env-file %ENV_FILE% ^
-    -p "[::]:"%HOST_API_PORT%":8000" ^
-    -p "[::]:"%HOST_UI_PORT%":9000" ^
-    -p "[::]:"%HOST_POSTGRES_PORT%":5432" ^
+    -p %HOST_API_PORT%:8000 ^
+    -p %HOST_UI_PORT%:9000 ^
+    -p %HOST_POSTGRES_PORT%:5432 ^
     -v %VOLUME_NAME%:/data ^
     -v %VOLUME_NAME%-wal:/wal ^
     -v %VOLUME_NAME%-docs:/documents ^
@@ -102,9 +102,9 @@ echo ==============================================
 echo   Recallium is running!
 echo ==============================================
 echo.
-echo   Web UI:  http://localhost:%HOST_UI_PORT%
-echo   MCP API: http://localhost:%HOST_API_PORT%/mcp
-echo   Health:  http://localhost:%HOST_API_PORT%/health
+echo   Web UI:  http://127.0.0.1:%HOST_UI_PORT%
+echo   MCP API: http://127.0.0.1:%HOST_API_PORT%/mcp
+echo   Health:  http://127.0.0.1:%HOST_API_PORT%/health
 echo.
 echo   Logs:    docker logs -f %CONTAINER_NAME%
 echo   Stop:    docker stop %CONTAINER_NAME%
@@ -113,6 +113,6 @@ echo.
 echo   Opening Web UI in your browser...
 echo.
 
-start http://localhost:%HOST_UI_PORT%
+start http://127.0.0.1:%HOST_UI_PORT%
 
 endlocal
