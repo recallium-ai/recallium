@@ -71,9 +71,12 @@ if not "%HOST_IP%"=="" (
     echo           If Ollama connection fails, manually set OLLAMA_HOST in %ENV_FILE%
 )
 
-REM Stop existing container
+REM Stop existing container and remove old image
 docker stop %CONTAINER_NAME% >nul 2>&1
 docker rm %CONTAINER_NAME% >nul 2>&1
+
+echo [Recallium] Removing old image to ensure fresh download...
+docker rmi %IMAGE% >nul 2>&1
 
 echo [Recallium] Pulling latest image...
 docker pull %IMAGE%

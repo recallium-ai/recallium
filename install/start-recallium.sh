@@ -49,9 +49,12 @@ API_PORT="${HOST_API_PORT:-8001}"
 UI_PORT="${HOST_UI_PORT:-9001}"
 DB_PORT="${HOST_POSTGRES_PORT:-5433}"
 
-# Stop existing container
+# Stop existing container and remove old image
 docker stop "$CONTAINER_NAME" 2>/dev/null || true
 docker rm "$CONTAINER_NAME" 2>/dev/null || true
+
+echo "[Recallium] Removing old image to ensure fresh download..."
+docker rmi "$IMAGE" 2>/dev/null || true
 
 echo "[Recallium] Pulling latest image..."
 docker pull "$IMAGE"
