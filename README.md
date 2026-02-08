@@ -7,7 +7,7 @@
 
 *Your digital developer twin—Because "Explain Our Setup Again" Gets Old Fast*
 
-[![Version](https://img.shields.io/badge/version-0.8.146-blue.svg)](https://github.com/recallium-ai/recallium)
+[![Version](https://img.shields.io/badge/version-0.8.230-blue.svg)](https://github.com/recallium-ai/recallium)
 [![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://hub.docker.com/r/recalliumai/recallium)
 [![License](https://img.shields.io/badge/license-Community-orange.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-compatible-purple.svg)](https://modelcontextprotocol.io)
@@ -92,7 +92,8 @@ docker compose --env-file recallium.env up -d
 - [Setup Wizard](#setup-wizard--provider-configuration)
 - [Web Dashboard](#web-dashboard)
 - [How It Works](#how-it-works) (with examples)
-- [What's New in Recallium](#whats-new-in-v08146)
+- [What's New in v0.8.230](#whats-new-in-v08230)
+- [Previous Releases](#previous-releases)
 - [Complete Feature Set](#complete-feature-set)
 - [16 MCP Tools](#16-mcp-tools)
 - [Pro Tips](#pro-tips)
@@ -561,7 +562,35 @@ Claude: "✓ Inactivated 47 Redis memories (soft delete, recoverable)
 
 ---
 
-## What's New in v0.8.155
+## What's New in v0.8.230
+
+### **Palantir BYO-LLM Support**
+Bring your own LLM with Palantir Foundry AIP:
+- Palantir Foundry AIP now supported as a Bring-Your-Own-LLM provider
+- Seamlessly integrates with Recallium's multi-provider failover system
+- Works with your existing Palantir enterprise deployment
+
+---
+
+### **Better Searches**
+Improved search accuracy and relevance:
+- Smarter hybrid search combining semantic, keyword, and tag matching
+- Faster results with reduced storage footprint
+- More accurate ranking for better discovery
+
+---
+
+### **Claude Desktop Extensions Support**
+Native support for Claude Desktop with Extensions:
+- One-click MCP connection at `http://localhost:8001/mcp`
+- Works with 60+ IDEs including VS Code, JetBrains, Neovim, and more
+- Seamless integration with Claude Desktop's new Extensions feature
+
+---
+
+## Previous Releases
+
+### v0.8.155
 
 ![Recallium v0.8.155 - Full-featured web dashboard](images/dashboard.png)
 *Dashboard: Your command center for memories, projects, insights, and analytics*
@@ -914,7 +943,7 @@ Your code. Your patterns. Your decisions.
 
 **Supported IDEs**: Cursor • Claude Desktop • Claude Code • VS Code • Windsurf • Roo Code • Visual Studio 2022 • JetBrains • Zed • Cline • BoltAI • Augment Code • Warp • Amazon Q • AntiGravity • and more...
 
-**Version 0.8.146** | Released January 2026 | [Installation Guide](install/README.md)
+**Version 0.8.230** | Released February 2026 | [Installation Guide](install/README.md)
 
 ---
 

@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(grep:*)",
-      "mcp__recallium__search_memories",
-      "mcp__recallium__expand_memories"
-    ]
-  }
-}
