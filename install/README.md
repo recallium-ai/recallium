@@ -623,7 +623,7 @@ These IDEs only support command-based connections and need the npm client as a s
 
 **First, install the npm client:**
 ```bash
-npm install -g @recallium/mcp-client
+npm install -g recallium
 ```
 
 <details>
@@ -637,7 +637,7 @@ Add this to your Zed `settings.json`. See [Zed Context Server docs](https://zed.
     "recallium": {
       "source": "custom",
       "command": "npx",
-      "args": ["-y", "recallium-mcp"],
+      "args": ["-y", "recallium"],
       "env": {
         "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
@@ -665,7 +665,7 @@ See [JetBrains AI Assistant Documentation](https://www.jetbrains.com/help/ai-ass
   "mcpServers": {
     "recallium": {
       "command": "npx",
-      "args": ["-y", "recallium-mcp"],
+      "args": ["-y", "recallium"],
       "env": {
         "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
@@ -690,7 +690,7 @@ Add this to your Cline MCP servers configuration:
   "mcpServers": {
     "recallium": {
       "command": "npx",
-      "args": ["-y", "recallium-mcp"],
+      "args": ["-y", "recallium"],
       "env": {
         "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
@@ -711,7 +711,7 @@ Open the "Settings" page of the app, navigate to "Plugins," and enter the follow
   "mcpServers": {
     "recallium": {
       "command": "npx",
-      "args": ["-y", "recallium-mcp"],
+      "args": ["-y", "recallium"],
       "env": {
         "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
@@ -738,7 +738,7 @@ More information is available on [BoltAI's Documentation site](https://docs.bolt
     {
       "name": "recallium",
       "command": "npx",
-      "args": ["-y", "recallium-mcp"],
+      "args": ["-y", "recallium"],
       "env": {
         "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
@@ -764,7 +764,7 @@ See [Warp MCP Documentation](https://docs.warp.dev/knowledge-and-collaboration/m
 {
   "recallium": {
     "command": "npx",
-    "args": ["-y", "recallium-mcp"],
+    "args": ["-y", "recallium"],
     "env": {
       "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
     },
@@ -788,7 +788,7 @@ Add this to your Amazon Q Developer CLI configuration file. See [Amazon Q Develo
   "mcpServers": {
     "recallium": {
       "command": "npx",
-      "args": ["-y", "recallium-mcp"],
+      "args": ["-y", "recallium"],
       "env": {
         "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
       }
@@ -854,7 +854,7 @@ You can test and debug your Recallium MCP connection using the official MCP Insp
 npx @modelcontextprotocol/inspector http://localhost:8001/mcp
 
 # Test npm client (stdio→HTTP bridge)
-npx @modelcontextprotocol/inspector npx -y recallium-mcp
+npx @modelcontextprotocol/inspector npx -y recallium
 ```
 
 The inspector provides a web interface to:
@@ -956,7 +956,7 @@ If you see "HTTP 406: Not Acceptable" errors in Claude Desktop logs:
 
 1. Update npm client to latest version:
    ```bash
-   npm install -g @recallium/mcp-client
+   npm install -g recallium
    ```
 
 2. Clear npx cache:
@@ -990,7 +990,7 @@ The latest npm client (v1.2.3+) includes the correct Accept headers required by 
    - Restart your IDE after config changes
 
 4. For command-only IDEs (Claude Desktop, Zed):
-   - Ensure npm client is installed: `npm list -g @recallium/mcp-client`
+   - Ensure npm client is installed: `npm list -g recallium`
    - Check `RECALLIUM_SERVER_URL` includes `/mcp`: `http://localhost:8001/mcp`
 
 </details>
@@ -1063,18 +1063,18 @@ docker compose --env-file recallium.env up -d
 **Module not found errors:**
 ```bash
 # Reinstall npm client
-npm uninstall -g @recallium/mcp-client
-npm install -g @recallium/mcp-client
+npm uninstall -g recallium
+npm install -g recallium
 
 # Verify installation
-npm list -g @recallium/mcp-client
-recallium-mcp --version
+npm list -g recallium
+recallium --version
 ```
 
 **Connection timeout:**
 ```bash
 # Test npm client directly
-RECALLIUM_DEBUG=true RECALLIUM_SERVER_URL=http://localhost:8001/mcp recallium-mcp
+RECALLIUM_DEBUG=true RECALLIUM_SERVER_URL=http://localhost:8001/mcp recallium
 ```
 
 **Wrong Node.js version:**
