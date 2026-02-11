@@ -1,5 +1,5 @@
 
-![Recallium - AI Memory & Intelligence Platform](images/recallium-splash.png)
+![Recallium - AI Memory & Intelligence Platform](images/red-pill-blue-pill.jpg)
 
 # Recallium
 
