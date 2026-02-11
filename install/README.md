@@ -36,8 +36,7 @@ Just install Ollama, pull a model, and select it in the Setup Wizard. Your data 
 
 | Connection Type | IDEs | Setup |
 |-----------------|------|-------|
-| **HTTP Direct** (recommended) | Cursor, VS Code, Claude Code, Claude Desktop, Windsurf, Roo Code, Visual Studio 2022 | Just add URL to config |
-| **npm Client** (stdio→HTTP bridge) | Zed, JetBrains, Cline, BoltAI, Augment Code, Warp, Amazon Q | Install `npm install -g recallium` first |
+| **HTTP Direct** (recommended) | Cursor, VS Code, Claude Code, Claude Desktop, Windsurf, Roo Code, Visual Studio 2022, Zed, JetBrains, Cline, Augment Code, Warp, Amazon Q | Just add URL to config |
 
 ---
 
@@ -77,19 +76,11 @@ ollama pull qwen2.5-coder:7b
 
 ---
 
-## Note: No npm Client Needed (For Most IDEs)
+## No npm Client Needed
 
-**Recallium now uses HTTP transport** - most modern IDEs connect directly to the Docker container:
+**Recallium uses HTTP transport** - all modern IDEs connect directly to the Docker container at `http://localhost:8001/mcp`.
 
-**No npm client needed (HTTP or Extension)**: Cursor, VS Code, Claude Code, Claude Desktop, Windsurf, and 10+ other IDEs
-
-**npm client required (STDIO→HTTP bridge)**: Zed, JetBrains, Cline, BoltAI, and other command-only IDEs
-
-If your IDE requires the npm client (see IDE Integration section below), install it:
-
-```bash
-npm install -g recallium
-```
+No npm client installation required. Just add the URL to your IDE's MCP configuration.
 
 ---
 
@@ -505,7 +496,7 @@ See [VS Code MCP docs](https://code.visualstudio.com/docs/copilot/chat/mcp-serve
 Run this command to add Recallium with HTTP transport:
 
 ```bash
-claude mcp add --transport http recallium http://localhost:8001/mcp
+claude mcp add --scope user --transport http recallium http://localhost:8001/mcp
 ```
 
 **Verification:**
@@ -576,6 +567,123 @@ Add this to your Visual Studio MCP config file. See [Visual Studio MCP docs](htt
 </details>
 
 <details>
+<summary><b>Install in Zed</b></summary>
+
+Add this to your Zed `settings.json`. See [Zed Context Server docs](https://zed.dev/docs/ai/mcp) for more info.
+
+```json
+{
+  "context_servers": {
+    "recallium": {
+      "url": "http://localhost:8001/mcp"
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><b>Install in JetBrains AI Assistant</b></summary>
+
+See [JetBrains AI Assistant Documentation](https://www.jetbrains.com/help/ai-assistant/configure-an-mcp-server.html) for more details.
+
+1. In JetBrains IDEs, go to `Settings` → `Tools` → `AI Assistant` → `Model Context Protocol (MCP)`
+2. Click `+ Add`
+3. Select `Streamable HTTP` as transport
+4. Enter URL: `http://localhost:8001/mcp`
+5. Enter name: `recallium`
+6. Click `OK` and `Apply`
+
+**Or via JSON configuration:**
+
+```json
+{
+  "mcpServers": {
+    "recallium": {
+      "url": "http://localhost:8001/mcp"
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><b>Install in Cline</b></summary>
+
+Add this to your Cline MCP servers configuration:
+
+```json
+{
+  "mcpServers": {
+    "recallium": {
+      "type": "streamableHttp",
+      "url": "http://localhost:8001/mcp"
+    }
+  }
+}
+```
+
+See [Cline MCP docs](https://docs.cline.bot/mcp/configuring-mcp-servers) for more info.
+
+</details>
+
+<details>
+<summary><b>Install in Augment Code</b></summary>
+
+1. Press Cmd/Ctrl Shift P or go to the hamburger menu in the Augment panel
+2. Select Edit Settings
+3. Under Advanced, click Edit in settings.json
+4. Add the server configuration:
+
+```json
+"augment.advanced": {
+  "mcpServers": [
+    {
+      "name": "recallium",
+      "transport": "http",
+      "url": "http://localhost:8001/mcp"
+    }
+  ]
+}
+```
+
+Once added, restart your editor. See [Augment MCP docs](https://docs.augmentcode.com/setup-augment/mcp) for more info.
+
+</details>
+
+<details>
+<summary><b>Install in Warp</b></summary>
+
+See [Warp MCP Documentation](https://docs.warp.dev/agent-platform/capabilities/mcp) for details.
+
+1. Navigate `Settings` > `AI` > `Manage MCP servers`
+2. Add a new MCP server by clicking the `+ Add` button
+3. Select URL-based server
+4. Enter URL: `http://localhost:8001/mcp`
+5. Enter name: `recallium`
+6. Click `Save`
+
+</details>
+
+<details>
+<summary><b>Install in Amazon Q Developer</b></summary>
+
+See [Amazon Q Developer MCP docs](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-mcp-configuration.html) for more details.
+
+1. Open the Q Developer panel in your IDE
+2. Open the Chat panel and choose the tools icon
+3. Click `+` to add a new MCP server
+4. Select scope: global or local
+5. Enter name: `recallium`
+6. Select `http` as transport protocol
+7. Enter URL: `http://localhost:8001/mcp`
+8. Click `Save`
+
+</details>
+
+<details>
 <summary><b>Other HTTP-Capable IDEs</b></summary>
 
 Recallium also works with:
@@ -614,188 +722,6 @@ Refer to your IDE's MCP documentation for exact configuration syntax.
 **Troubleshooting:**
 - If tools don't appear, verify the Docker container is running: `docker ps -f name=recallium`
 - Check Claude Desktop logs for detailed error messages
-
-</details>
-
-### Command-Only IDEs (Requires npm Client)
-
-These IDEs only support command-based connections and need the npm client as a stdio→HTTP bridge:
-
-**First, install the npm client:**
-```bash
-npm install -g recallium
-```
-
-<details>
-<summary><b>Install in Zed</b></summary>
-
-Add this to your Zed `settings.json`. See [Zed Context Server docs](https://zed.dev/docs/assistant/context-servers) for more info.
-
-```json
-{
-  "context_servers": {
-    "recallium": {
-      "source": "custom",
-      "command": "npx",
-      "args": ["-y", "recallium"],
-      "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
-      }
-    }
-  }
-}
-```
-
-See [Zed Context Server docs](https://zed.dev/docs/assistant/context-servers) for more info.
-
-</details>
-
-<details>
-<summary><b>Install in JetBrains AI Assistant</b></summary>
-
-See [JetBrains AI Assistant Documentation](https://www.jetbrains.com/help/ai-assistant/configure-an-mcp-server.html) for more details.
-
-1. In JetBrains IDEs, go to `Settings` → `Tools` → `AI Assistant` → `Model Context Protocol (MCP)`
-2. Click `+ Add`
-3. Click on `Command` in the top-left corner and select `As JSON`
-4. Add this configuration and click `OK`:
-
-```json
-{
-  "mcpServers": {
-    "recallium": {
-      "command": "npx",
-      "args": ["-y", "recallium"],
-      "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
-      }
-    }
-  }
-}
-```
-
-5. Click `Apply` to save changes
-
-See [JetBrains AI Assistant Documentation](https://www.jetbrains.com/help/ai-assistant/configure-an-mcp-server.html) for more info.
-
-</details>
-
-<details>
-<summary><b>Install in Cline</b></summary>
-
-Add this to your Cline MCP servers configuration:
-
-```json
-{
-  "mcpServers": {
-    "recallium": {
-      "command": "npx",
-      "args": ["-y", "recallium"],
-      "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
-      }
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary><b>Install in BoltAI</b></summary>
-
-Open the "Settings" page of the app, navigate to "Plugins," and enter the following JSON:
-
-```json
-{
-  "mcpServers": {
-    "recallium": {
-      "command": "npx",
-      "args": ["-y", "recallium"],
-      "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
-      }
-    }
-  }
-}
-```
-
-More information is available on [BoltAI's Documentation site](https://docs.boltai.com/docs/plugins/mcp-servers).
-
-</details>
-
-<details>
-<summary><b>Install in Augment Code</b></summary>
-
-1. Press Cmd/Ctrl Shift P or go to the hamburger menu in the Augment panel
-2. Select Edit Settings
-3. Under Advanced, click Edit in settings.json
-4. Add the server configuration to the `mcpServers` array:
-
-```json
-"augment.advanced": {
-  "mcpServers": [
-    {
-      "name": "recallium",
-      "command": "npx",
-      "args": ["-y", "recallium"],
-      "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
-      }
-    }
-  ]
-}
-```
-
-Once the MCP server is added, restart your editor.
-
-</details>
-
-<details>
-<summary><b>Install in Warp</b></summary>
-
-See [Warp MCP Documentation](https://docs.warp.dev/knowledge-and-collaboration/mcp) for details.
-
-1. Navigate `Settings` > `AI` > `Manage MCP servers`
-2. Add a new MCP server by clicking the `+ Add` button
-3. Paste the configuration given below:
-
-```json
-{
-  "recallium": {
-    "command": "npx",
-    "args": ["-y", "recallium"],
-    "env": {
-      "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
-    },
-    "working_directory": null,
-    "start_on_launch": true
-  }
-}
-```
-
-4. Click `Save` to apply the changes
-
-</details>
-
-<details>
-<summary><b>Install in Amazon Q Developer CLI</b></summary>
-
-Add this to your Amazon Q Developer CLI configuration file. See [Amazon Q Developer CLI docs](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/command-line-mcp-configuration.html) for more details.
-
-```json
-{
-  "mcpServers": {
-    "recallium": {
-      "command": "npx",
-      "args": ["-y", "recallium"],
-      "env": {
-        "RECALLIUM_SERVER_URL": "http://localhost:8001/mcp"
-      }
-    }
-  }
-}
-```
 
 </details>
 
@@ -850,11 +776,7 @@ From then on, your AI assistant will automatically use Recallium's persistent me
 You can test and debug your Recallium MCP connection using the official MCP Inspector:
 
 ```bash
-# Test HTTP connection
 npx @modelcontextprotocol/inspector http://localhost:8001/mcp
-
-# Test npm client (stdio→HTTP bridge)
-npx @modelcontextprotocol/inspector npx -y recallium
 ```
 
 The inspector provides a web interface to:
@@ -950,28 +872,6 @@ docker compose --env-file recallium.env up -d
 </details>
 
 <details>
-<summary><b>Claude Desktop HTTP 406 Errors</b></summary>
-
-If you see "HTTP 406: Not Acceptable" errors in Claude Desktop logs:
-
-1. Update npm client to latest version:
-   ```bash
-   npm install -g recallium
-   ```
-
-2. Clear npx cache:
-   ```bash
-   rm -rf ~/.npm/_npx
-   npm cache clean --force
-   ```
-
-3. Restart Claude Desktop completely
-
-The latest npm client (v1.2.3+) includes the correct Accept headers required by the Recallium server.
-
-</details>
-
-<details>
 <summary><b>Tools Not Appearing in IDE</b></summary>
 
 1. Verify Docker container is running:
@@ -985,13 +885,9 @@ The latest npm client (v1.2.3+) includes the correct Accept headers required by 
    curl http://localhost:8001/mcp/status
    ```
 
-3. For HTTP-capable IDEs (Cursor, VS Code):
-   - Verify URL ends with `/mcp`: `http://localhost:8001/mcp`
+3. Verify your IDE configuration:
+   - URL must end with `/mcp`: `http://localhost:8001/mcp`
    - Restart your IDE after config changes
-
-4. For command-only IDEs (Claude Desktop, Zed):
-   - Ensure npm client is installed: `npm list -g recallium`
-   - Check `RECALLIUM_SERVER_URL` includes `/mcp`: `http://localhost:8001/mcp`
 
 </details>
 
@@ -1053,34 +949,6 @@ The `--pull always` flag forces Docker to pull the latest image from Docker Hub,
 docker compose down
 docker rmi manujbawa/recallium:latest
 docker compose --env-file recallium.env up -d
-```
-
-</details>
-
-<details>
-<summary><b>npm Client Issues (Claude Desktop, Zed, JetBrains)</b></summary>
-
-**Module not found errors:**
-```bash
-# Reinstall npm client
-npm uninstall -g recallium
-npm install -g recallium
-
-# Verify installation
-npm list -g recallium
-recallium --version
-```
-
-**Connection timeout:**
-```bash
-# Test npm client directly
-RECALLIUM_DEBUG=true RECALLIUM_SERVER_URL=http://localhost:8001/mcp recallium
-```
-
-**Wrong Node.js version:**
-The npm client requires Node.js >= 18. Check your version:
-```bash
-node --version
 ```
 
 </details>
