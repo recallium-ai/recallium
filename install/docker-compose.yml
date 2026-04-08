@@ -1,8 +1,25 @@
 services:
+  # Init service to fix volume permissions (runs once before main service)
+  # Docker volumes are created with root ownership by default
+  # The main container runs as user 1000, so we need to fix permissions
+  init-permissions:
+    image: alpine:latest
+    container_name: ${CONTAINER_NAME:-recallium}-init
+    volumes:
+      - data:/data
+      - wal:/wal
+      - docs:/documents
+      - secrets:/secrets
+    command: chown -R 1000:1000 /data /wal /documents /secrets
+    restart: "no"
+
   recallium:
     image: recalliumai/recallium:latest
     container_name: ${CONTAINER_NAME:-recallium}
     restart: unless-stopped
+    depends_on:
+      init-permissions:
+        condition: service_completed_successfully
     ports:
       # Using [::] for IPv6 dual-stack (supports both IPv4 and IPv6, fixes Safari localhost issue)
       - "[::]:${HOST_UI_PORT:-9001}:9000"       # Web UI (internal 9000)

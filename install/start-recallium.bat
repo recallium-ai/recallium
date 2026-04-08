@@ -81,6 +81,17 @@ docker rmi %IMAGE% >nul 2>&1
 echo [Recallium] Pulling latest image...
 docker pull %IMAGE%
 
+REM Fix volume permissions (runs once, fast if already correct)
+REM Docker volumes are created with root ownership by default
+REM The container runs as user 1000, so we need to fix permissions
+echo [Recallium] Fixing volume permissions...
+docker run --rm ^
+    -v %VOLUME_NAME%:/data ^
+    -v %VOLUME_NAME%-wal:/wal ^
+    -v %VOLUME_NAME%-docs:/documents ^
+    -v %VOLUME_NAME%-secrets:/secrets ^
+    alpine:latest chown -R 1000:1000 /data /wal /documents /secrets >nul 2>&1
+
 echo [Recallium] Starting container...
 docker run -d ^
     --name %CONTAINER_NAME% ^
