@@ -341,6 +341,37 @@ See the [full installation guide](install/README.md) for your IDE's exact config
 
 ---
 
+## Corporate & Air-Gapped Deployment
+
+Running Recallium behind a corporate proxy or in an air-gapped environment?
+
+**SSL Certificate Issues (Corporate Proxy)**
+
+If you see `SSL: CERTIFICATE_VERIFY_FAILED` errors, your corporate proxy is likely
+intercepting HTTPS traffic. Add to `recallium.env`:
+
+```bash
+DISABLE_SSL_VERIFY=1
+```
+
+⚠️ Only use in trusted corporate networks.
+
+**Air-Gapped / Offline Mode**
+
+For environments with no internet access:
+1. Pre-download the embedding model on an internet-connected machine
+2. Copy the cache to your air-gapped machine
+3. Enable offline mode:
+
+```bash
+HF_HUB_OFFLINE=1
+TRANSFORMERS_OFFLINE=1
+```
+
+See the [installation guide](install/README.md#ssl-certificate-errors-corporate-proxy--air-gapped-environments) for detailed instructions.
+
+---
+
 ## Enterprise
 
 Recallium Community is free under ELv2.

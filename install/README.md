@@ -1016,6 +1016,66 @@ docker compose --env-file recallium.env up -d
 
 </details>
 
+<details>
+<summary><b>SSL Certificate Errors (Corporate Proxy / Air-Gapped Environments)</b></summary>
+
+If you see errors like:
+```
+SSL: CERTIFICATE_VERIFY_FAILED
+certificate verify failed: unable to get local issuer certificate
+Basic Constraints of CA cert not marked critical
+```
+
+This typically occurs in **corporate environments** where a proxy intercepts HTTPS traffic using a custom CA certificate.
+
+**Option 1: Disable SSL Verification (Quick Fix)**
+
+Add to `recallium.env`:
+```bash
+DISABLE_SSL_VERIFY=1
+```
+
+Then restart:
+```bash
+docker compose down
+docker compose --env-file recallium.env up -d
+```
+
+⚠️ **Security Warning:** This disables SSL verification for all HTTPS calls. Only use in trusted corporate networks.
+
+**Option 2: Offline Mode (Air-Gapped Environments)**
+
+If your environment has no internet access, you can pre-download the embedding model:
+
+1. On a machine with internet access, download the model:
+   ```bash
+   # Download Nomic model cache
+   python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('nomic-ai/nomic-embed-text-v1.5', trust_remote_code=True)"
+   ```
+
+2. Copy the cache folder (`~/.cache/huggingface`) to your air-gapped machine
+
+3. Mount it as a volume and enable offline mode in `recallium.env`:
+   ```bash
+   HF_HUB_OFFLINE=1
+   TRANSFORMERS_OFFLINE=1
+   ```
+
+4. Add volume mount in `docker-compose.yml`:
+   ```yaml
+   volumes:
+     - /path/to/hf-cache:/app/.cache/huggingface
+   ```
+
+**What These Settings Affect:**
+- `DISABLE_SSL_VERIFY=1` - Bypasses SSL verification for HuggingFace downloads, version checks, and all HTTPS calls
+- `HF_HUB_OFFLINE=1` - Prevents HuggingFace from attempting any network requests
+- `TRANSFORMERS_OFFLINE=1` - Prevents Transformers library from downloading models
+
+**Note:** The "Version manifest fetch failed" warning can be safely ignored—it's just the version check failing due to SSL issues. The app works fully without it.
+
+</details>
+
 ## Next Steps
 
 1. **Complete Setup Wizard**: Visit http://localhost:9001 to configure your LLM provider
