@@ -66,7 +66,8 @@ Recallium gives you persistent memory across sessions. Every decision, learning,
 | Debugging & fixes | `debug` |
 | Learnings & research | `learning`, `research` |
 | Progress & milestones | `progress` |
-| User preferences & constraints | `rule` |
+
+**⚠️ RULES ARE SPECIAL** - See "Rules" section below. Never store rules proactively.
 
 ### What NEVER Goes in store_memory
 
@@ -92,11 +93,12 @@ Store memory **immediately** after:
 | Designed architecture/APIs | `design` |
 | Made choice with rationale | `decision` |
 | Discovered insight/aha moment | `learning` |
-| Defined constraint/preference | `rule` |
 | Gathered external info | `research` |
 | Had meeting/conversation | `discussion` |
 | Hit milestone/checkpoint | `progress` |
 | Created TODO/action item | `task` |
+
+**⚠️ Note:** `rule` is NOT in this list. Rules require explicit user request.
 
 ### Memory Types Decision Tree
 
@@ -106,9 +108,10 @@ Fixed a bug? → debug
 Wrote focused code? → code-snippet
 Made a choice with reasoning? → decision
 Learned something new? → learning
-User preference/constraint? → rule
 None of above → working-notes
 ```
+
+**Note:** `rule` is NOT in this tree. Only store rules when user explicitly asks.
 
 ### What to Include
 
@@ -282,6 +285,18 @@ add_thought(sequence_id=sequence_id, thought="Choosing JWT with 15min access, 7d
 
 ## Rules
 
+**⚠️ RULES ARE DIFFERENT FROM OTHER MEMORIES**
+
+### The Rule About Rules
+
+1. **NEVER store rules proactively** - unlike other memory types
+2. **NEVER re-store rules you just loaded** - they already exist!
+3. **ONLY store rules when user EXPLICITLY asks:**
+   - "Remember this rule"
+   - "Always do X from now on"
+   - "Add a rule that..."
+   - "Store this as a guideline"
+
 ### Getting Rules
 
 ```python
@@ -292,9 +307,12 @@ get_rules(project_name="my-project")
 get_rules(project_name="__global__")
 ```
 
-### Storing Rules
+**After loading rules:** Follow them. Do NOT re-store them.
+
+### Storing Rules (ONLY when user asks)
 
 ```python
+# ONLY do this when user explicitly requests a new rule
 store_memory(
     content="Always use uv instead of pip for Python dependency management",
     project_name="__global__",  # or specific project
@@ -303,7 +321,7 @@ store_memory(
 )
 ```
 
-**Before storing a rule:** Search first to avoid duplicates!
+**Before storing:** Check existing rules! `get_rules(project_name="your-project")` returns both project AND global rules.
 
 ## Quick Reference
 
@@ -338,6 +356,8 @@ These thoughts mean you're rationalizing. STOP and follow the skill.
 | "This rule doesn't apply here" | It does. Rules are NON-NEGOTIABLE. Follow them. |
 | "I'm being efficient by skipping storage" | You're being destructive. Future sessions will suffer. |
 | "The user didn't ask me to store" | Users don't ask. YOU store proactively. That's your job. |
+| "I should store this rule I just read" | NO! Rules from recallium/get_rules ALREADY EXIST. Never re-store. |
+| "This seems like a good rule to add" | Rules are NOT proactive. Only store when user explicitly asks. |
 
 **If you catch yourself thinking any of these: STOP. Follow the rules.**
 
@@ -352,7 +372,9 @@ These thoughts mean you're rationalizing. STOP and follow the skill.
 | Missing related_files | Always include files you touched |
 | Wrong memory_type | Use decision tree above |
 | Storing docs as memories | Use document upload for PDFs/specs |
-| Not searching first | Search before storing rules (avoid duplicates) |
+| Not checking existing rules | Call get_rules() before storing new rules (avoid duplicates) |
+| **Re-storing loaded rules** | **Rules from recallium/get_rules ALREADY EXIST - never re-store!** |
+| **Proactively storing rules** | **Rules require EXPLICIT user request - don't auto-create them** |
 
 ## The Iron Law
 
@@ -371,4 +393,5 @@ The rules exist because past agents failed in predictable ways. You are not spec
 5. **Never store documents** - use document upload for user files
 6. **Use memories for your artifacts** - implementations, designs, decisions
 7. **Projects for formal docs** - briefs, PRDs, plans
-8. **Search before storing rules** - avoid duplicates
+8. **NEVER re-store rules you loaded** - they already exist!
+9. **ONLY store rules when user explicitly asks** - rules are not proactive
