@@ -28,6 +28,7 @@ Your code remembers what changed. Recallium remembers why.
 - [Pricing](#pricing)
 - [FAQ](#faq)
 - [Self-hosted community edition (formerly MiniMe MCP)](#self-hosted-community-edition-formerly-minime-mcp)
+- [Migrating from the community edition to Recallium Cloud](#migrating-from-the-community-edition-to-recallium-cloud)
 - [Links](#links)
 - [License](#license)
 
@@ -239,7 +240,31 @@ Yes. Recallium was called MiniMe MCP (also written MiniMe-MCP) from August 2025 
 
 The self-hosted community edition, which shipped as MiniMe MCP until the rename, **continues to be supported**. It lives in the [`community/`](community/) directory of this repository: a Docker deployment with its [installation guide](community/install/README.md), the [Claude Code skill](community/claude-code-skills/) and the [Claude Desktop extension](community/claude-desktop-extension/). The image is published on [Docker Hub](https://hub.docker.com/r/recalliumai/recallium). It is free under the [Elastic License v2](LICENSE) and runs on your own machine or network, including behind a corporate proxy or air-gapped; see the [community README](community/README.md). Report issues for either edition on [GitHub Issues](https://github.com/recallium-ai/recallium/issues).
 
-Recallium Cloud is the managed service and carries the team features above: shared repositories, teams and role-based access, insights, and nothing to run.
+Recallium Cloud is the managed service and carries the team features above: shared repositories, teams and role-based access, insights, and nothing to run. Moving your memories across takes one export and one import; see [Migrating from the community edition to Recallium Cloud](#migrating-from-the-community-edition-to-recallium-cloud).
+
+## Migrating from the community edition to Recallium Cloud
+
+Your projects and memories move from a self-hosted instance to Recallium Cloud as one zip file. Nothing is deleted from the self-hosted instance; it keeps running until you stop it.
+
+**1. Open Import/Export in the community dashboard.** In your self-hosted dashboard, go to **Projects** and click **Import/Export** at the top right.
+
+![Community edition dashboard: the Projects page with the Import/Export button at the top right](images/export-step-1.jpg)
+
+**2. Export all projects.** On the **Export** tab, keep the scope at **All Projects** (a complete backup: projects, sessions, thinking sequences, thoughts, memories and project links) and leave the dates empty to export everything. The preview shows the record counts and size. Click **Export** and save the zip. The same export is available from the command line with [`community/install/download-memories.sh`](community/install/download-memories.sh), which fetches it from your instance's `/api/data/export` endpoint.
+
+![Community edition Data Management dialog on the Export tab: scope All Projects, empty date range, a preview of projects, memories and sessions, and the Export button](images/export-step-2.jpg)
+
+**3. Open Import/Export in Recallium Cloud.** Sign in at [app.recallium.ai](https://app.recallium.ai), go to **Projects** and click **Import/Export**.
+
+![Recallium Cloud: the Projects page with the Import/Export button at the top right](images/import-step-3.jpg)
+
+**4. Import the zip.** On the **Import** tab, choose **Select ZIP File to Import**, pick the export from step 2 and click **Import**. Your projects appear under the same names, so the agents you connect next find them by the Git repository as before.
+
+![Recallium Cloud Data Management dialog on the Import tab with the Select ZIP File to Import control](images/import-step-4.jpg)
+
+**5. Point your agents at Recallium Cloud.** Run `npx -y recallium@latest install`. It connects the coding agents on the machine to Cloud and signs you in. If a clone's repository name differs from the imported project name, map it once with `git config --local recallium.projectName <project-name>` ([docs](https://docs.recallium.ai/concepts/projects-and-workstreams#map-a-repository-to-an-existing-project)). Then remove the self-hosted MCP entry from each client, or leave both connected while you compare.
+
+Questions about a migration: [support@recallium.ai](mailto:support@recallium.ai).
 
 ## Links
 
