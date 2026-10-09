@@ -1,3 +1,5 @@
+![Recallium: institutional engineering memory for humans and AI coding agents](images/recallium-banner.png)
+
 # Recallium
 
 **Institutional engineering memory for humans and AI agents.**
@@ -82,6 +84,9 @@ Recallium Cloud is in a closed pilot. Join the waitlist at [recallium.ai/waitlis
 ## What your agent can do
 
 Every capability is an MCP tool the agent calls on its own, following the guidance the installer ships.
+
+![The recallium MCP server's tools listed in Claude Desktop's connector settings: Get Insights, Expand Memories, Get Workstream, Search Memories, Get Rules, Session Recap and more](images/recallium-tools-in-claude-desktop.jpg)
+*The same tools in every client: here, the `recallium` connector in Claude Desktop.*
 
 **Start a session informed.** `recallium` loads the project in one call: session recap, working state, rules, active workstreams and open tasks. `session_recap` alone gives recent activity.
 
