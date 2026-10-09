@@ -21,34 +21,6 @@ While an agent designs, decides, builds, debugs and ships, Recallium keeps the r
 
 Teams also call this memory for development agents, developer agents, AI coding assistants or AI software engineering agents. All of those mean the agents that do the development work. Recallium is **not** a memory API for the end users of the product you ship; it is memory for the team that ships it.
 
-## A session with Recallium
-
-An illustration of what changes once Recallium is connected. The names are made up; the shape is how our own team builds Recallium with Recallium.
-
-```text
-You:    recallium
-
-Agent:  Loaded recallium-website. Last session: PR #53 merged; the pricing
-        strip waits on your call. Open workstream: checkout-auth-hardening.
-        Rules in force: no secrets in fixtures; migrations need a down step.
-
-You:    Change the session cookie to SameSite=Strict.
-
-Agent:  Searched memory by topic and by file path (src/auth/session.ts).
-        Found a constraint from 2026-09-14: the mobile app's OAuth return
-        breaks on SameSite=Strict, so the team chose Lax with a CSRF token.
-        That decision still stands. Keep Lax, or revisit it?
-
-You:    Revisit it. Mobile moved to the native flow last month.
-
-Agent:  Stored the new decision (Strict, native OAuth return) as superseding
-        the September one, linked to src/auth/session.ts. Making the edit.
-        ...
-        Committed with trailer Recallium-Memory: <memory id>; checkpoint stored.
-```
-
-The next engineer, in any connected tool, asks "why is the session cookie Strict?" and gets the answer, the date, the files and the decision it replaced.
-
 ## Get started
 
 Recallium Cloud is the managed service. One command connects every coding agent on the machine:
@@ -60,9 +32,10 @@ npx -y recallium install
 It needs Node.js 22 or later. It detects the installed agents, signs you in once, shows its plan and writes nothing until you confirm. In every client the MCP server is named `recallium`, and the project name is derived from the Git repository.
 
 ```bash
-npx -y recallium status     # check the connection
-npx -y recallium doctor     # fix one
-npx -y recallium uninstall  # remove it (--all for every client)
+npx -y recallium status           # check the connection
+npx -y recallium doctor           # fix one
+npx -y recallium uninstall        # remove it from one client
+npx -y recallium uninstall --all  # remove it from every client
 ```
 
 Then open a Git repository in your coding agent and ask, for example: *"What decisions and open tasks should I know about before I change the authentication flow?"*
