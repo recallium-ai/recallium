@@ -14,6 +14,7 @@ Your code remembers what changed. Recallium remembers why.
 [![License](https://img.shields.io/badge/community%20edition-ELv2-orange)](LICENSE)
 
 - [What Recallium is](#what-recallium-is)
+- [Serving memory vs. engineering memory](#serving-memory-vs-engineering-memory)
 - [How it works](#how-it-works)
 - [Install](#install)
 - [Use it from your coding agent](#use-it-from-your-coding-agent)
@@ -37,6 +38,30 @@ Recallium is memory for the agents that do software development, such as Claude 
 While an agent designs, decides, builds, debugs and ships, Recallium keeps the record it produces: the decision and the options rejected, the root cause and the fix, the constraint that drove a change, the rules the team follows, and where an effort stands. When a later session, another tool or a teammate's agent touches the same code, Recallium finds what the team already settled and feeds it to the agent before it starts. When one decision replaces another, agents follow the current one.
 
 Teams also call this memory for development agents, developer agents, AI coding assistants or AI software engineering agents. All of those mean the agents that do the development work. Recallium is **not** a memory API for the end users of the product you ship; it is memory for the team that ships it.
+
+## Serving memory vs. engineering memory
+
+Every AI memory pitch sounds the same: your agent never forgets, persistent context, memory for AI. Two different products are sold under one word. **Serving memory** remembers the person your product talks to. **Engineering memory** remembers why your software is the way it is.
+
+Serving memory lives in your product's runtime. A support bot remembers a customer's last three orders; a tutoring app remembers a student struggles with fractions. The unit of memory is a person, the job is personalization, the scale is millions of end users, so the bill is metered by requests and tokens. Engineering memory lives in your team's build process. The unit is a decision: what was chosen, what was rejected, the constraint that forced it, and what replaced it later. The readers are the engineers and coding agents building the product, so it is priced per engineer.
+
+| | Serving memory | Engineering memory |
+|---|---|---|
+| Remembers | The person on the other side of the chat | Why the software is the way it is |
+| Unit of memory | A fact about a user | A decision, a fix, a constraint, with its reasoning |
+| Who reads it | Your product, on behalf of each end user | Every engineer and every coding agent on the team |
+| What "current" means | The latest preference wins | The latest decision wins, and the old one stays on record |
+| Scale | Millions of end users | One team, many repositories, many tools |
+| Billed by | Requests, tokens, queries | Engineer |
+| Cost of a stale memory | A slightly worse reply | A bug your security review already killed, shipped again |
+
+That last row is the whole argument. In serving memory a stale fact is an annoyance; in engineering memory a stale fact is an incident. A stale memory is more dangerous than a missing one, which is why Recallium keeps the old decision on record and makes the current one explicit.
+
+Mem0, Supermemory and Zep are serving memory, and good at it; Mem0 and Supermemory also ship Claude Code and Cursor plugins that remember the developer as a user. Letta builds stateful agents whose memory belongs to the agent. None of them is memory for the team: one record read and written by Claude Code on one laptop, Codex on another and Cursor on a third, often in the same afternoon. That is the job Recallium is built for.
+
+Read more: [Serving Memory vs. Engineering Memory](https://recallium.ai/blog/serving-memory-vs-engineering-memory) · [Why Recallium](https://recallium.ai/why-recallium) · [Recallium vs Mem0](https://recallium.ai/vs/mem0) · [Recallium vs Supermemory](https://recallium.ai/vs/supermemory) · [All comparisons](https://recallium.ai/comparisons).
+
+#engineering-memory #serving-memory #ai-memory #agent-memory #ai-agent-memory #memory-for-coding-agents #memory-for-development-agents #developer-agent-memory #ai-software-engineering-agents #sdlc-memory #institutional-memory #team-memory #mcp #mcp-server #mcp-memory-server #model-context-protocol #claude-code #claude-code-memory #codex #codex-memory #cursor #cursor-memory #github-copilot #copilot-memory #claude-desktop #windsurf #cline #devin #ai-coding-agent #ai-coding-assistant #coding-agents #persistent-memory #context-management #llm-context #cross-session-memory #cross-tool-memory #developer-productivity #self-hosted #developer-tools #minime-mcp
 
 ## How it works
 
