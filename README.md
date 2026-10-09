@@ -1,430 +1,285 @@
-![Recallium - The Memory OS for AI Coding Agents](images/red-pill-blue-pill.jpg)
+![Recallium: institutional engineering memory for humans and AI coding agents](images/recallium-banner.png)
 
 # Recallium
 
-**The memory OS for AI coding agents.**
+**Institutional engineering memory for humans and AI agents.**
 
-*Your digital developer twin — because "explain our setup again" gets old fast.*
+Your code remembers what changed. Recallium remembers why.
 
-[![Version](https://img.shields.io/github/v/tag/recallium-ai/recallium?label=version&sort=semver)](https://github.com/recallium-ai/recallium/releases)
-[![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://hub.docker.com/r/recalliumai/recallium)
-[![License](https://img.shields.io/badge/license-ELv2-orange.svg)](LICENSE)
-[![MCP](https://img.shields.io/badge/MCP-compatible-purple.svg)](https://modelcontextprotocol.io)
-[![Works with Claude Code](https://img.shields.io/badge/Works%20with-Claude%20Code-orange)](https://claude.ai/code)
-[![Works with Cursor](https://img.shields.io/badge/Works%20with-Cursor-orange)](https://cursor.sh)
-[![Works with Windsurf](https://img.shields.io/badge/Works%20with-Windsurf-orange)](https://codeium.com/windsurf)
+[![Website](https://img.shields.io/badge/recallium.ai-website-0a7cff)](https://recallium.ai)
+[![Docs](https://img.shields.io/badge/docs.recallium.ai-documentation-0a7cff)](https://docs.recallium.ai)
+[![npm](https://img.shields.io/npm/v/recallium?label=npx%20recallium)](https://www.npmjs.com/package/recallium)
+[![MCP](https://img.shields.io/badge/MCP-server-purple)](https://modelcontextprotocol.io)
+[![LongMemEval-S](https://img.shields.io/badge/LongMemEval--S-99.8%25%20hit%4010-2ea44f)](https://recallium.ai/benchmarks)
+[![License](https://img.shields.io/badge/community%20edition-ELv2-orange)](LICENSE)
 
----
+- [What Recallium is](#what-recallium-is)
+- [Serving memory vs. engineering memory](#serving-memory-vs-engineering-memory)
+- [How it works](#how-it-works)
+- [Install](#install)
+- [Use it from your coding agent](#use-it-from-your-coding-agent)
+- [Projects and workstreams](#projects-and-workstreams)
+- [Memory across the software lifecycle](#memory-across-the-software-lifecycle)
+- [Supported coding agents and IDEs](#supported-coding-agents-and-ides)
+- [Where it helps](#where-it-helps)
+- [Rules files and Recallium](#rules-files-and-recallium)
+- [Retrieval](#retrieval)
+- [Privacy and data handling](#privacy-and-data-handling)
+- [Pricing](#pricing)
+- [FAQ](#faq)
+- [Self-hosted community edition (formerly MiniMe MCP)](#self-hosted-community-edition-formerly-minime-mcp)
+- [Migrating from the community edition to Recallium Cloud](#migrating-from-the-community-edition-to-recallium-cloud)
+- [Links](#links)
+- [License](#license)
 
-It's Wednesday. Your agent just asked you to re-explain your auth architecture.
-You explained it on Monday.
+## What Recallium is
 
-Recallium fixes this — because it was built for developers, not for generic chat.
+Recallium is memory for the agents that do software development, such as Claude Code, Codex, Cursor, GitHub Copilot, Devin and Cline, and for the engineers who work beside them. It is served over the Model Context Protocol (MCP), so every coding tool on the team is a client of the same memory.
 
----
+While an agent designs, decides, builds, debugs and ships, Recallium keeps the record it produces: the decision and the options rejected, the root cause and the fix, the constraint that drove a change, the rules the team follows, and where an effort stands. When a later session, another tool or a teammate's agent touches the same code, Recallium finds what the team already settled and feeds it to the agent before it starts. When one decision replaces another, agents follow the current one.
 
-## Built for developers. Not chat agents.
+Teams also call this memory for development agents, developer agents, AI coding assistants or AI software engineering agents. All of those mean the agents that do the development work. Recallium is **not** a memory API for the end users of the product you ship; it is memory for the team that ships it.
 
-Memory only works when it understands context.
+## Serving memory vs. engineering memory
 
-A doctor's memory looks nothing like a customer service agent's. And neither
-looks like a developer's. Developers work in projects, make reversible decisions,
-debug recurring patterns, and build on choices made months ago. Generic memory
-tools don't understand any of that.
+Every AI memory pitch sounds the same: your agent never forgets, persistent context, memory for AI. Two different products are sold under one word. **Serving memory** remembers the person your product talks to. **Engineering memory** remembers why your software is the way it is.
 
-Recallium is built around the way developers actually work:
+Serving memory lives in your product's runtime. A support bot remembers a customer's last three orders; a tutoring app remembers a student struggles with fractions. The unit of memory is a person, the job is personalization, the scale is millions of end users, so the bill is metered by requests and tokens. Engineering memory lives in your team's build process. The unit is a decision: what was chosen, what was rejected, the constraint that forced it, and what replaced it later. The readers are the engineers and coding agents building the product, so it is priced per engineer.
 
-- **Projects are the unit of context** — memories are scoped, isolated, and retrieved per project
-- **Memory types reflect real developer artifacts** — decisions, debug sessions, research, in-progress work, rules, code patterns
-- **Search is tuned for engineering queries** — finding the reason behind a past choice, not just matching keywords
-- **Session continuity is automatic** — your agent knows what sprint you're in, what's pending, and where you left off
-
-This isn't a general-purpose memory layer that happens to support developers.
-It's a memory OS designed around the developer's cognitive workflow from the ground up.
-
----
-
-## What it is
-
-Recallium is a persistent memory layer for AI coding agents, delivered as an MCP
-server. It works with Claude Code, Cursor, Windsurf, and any MCP-compatible tool.
-
-Most memory tools save text and search it. Recallium knows *what kind* of thing
-it's storing, *which project* it belongs to, and *how to find it* when your agent
-needs it — across every session, every restart, every context compaction.
-
-![Recallium Dashboard](images/dashboard.png)
-*Your command center — memories, projects, insights, and activity across every coding session.*
-
----
-
-## The magic word
-
-Just say **`recallium`** in your IDE. Your agent instantly loads:
-
-- Where you left off and what's in progress
-- Recent decisions, debug sessions, open tasks
-- Project briefs, PRDs, and implementation plans
-- Global and project-specific rules
-
-**One word. Full context. Zero repetition.**
-
----
-
-## What makes it different
-
-| | Other MCP memory tools | Recallium |
+| | Serving memory | Engineering memory |
 |---|---|---|
-| Designed for | General use | Developer workflows specifically |
-| Memory model | Flat — text + tags | Typed — each memory has a category that shapes how it's stored and retrieved |
-| Project scoping | Global pool | Isolated per project, cross-project intelligence available |
-| Search precision | Vector similarity | Finds what you mean even when the words don't match — never returns zero results |
-| Session continuity | You figure it out | `session_recap` tells your agent exactly where it left off |
-| Agent rules | No | Per-project and global behavioral guardrails |
-| Structured reasoning | No | Agents reason in sequences stored as decisions |
-| Task tracking | No | Tasks linked directly to project memories |
-| Cross-project learning | No | Lessons learned once, applied everywhere |
-| Enterprise | No | RBAC, compliance, air-gapped deployment |
+| Remembers | The person on the other side of the chat | Why the software is the way it is |
+| Unit of memory | A fact about a user | A decision, a fix, a constraint, with its reasoning |
+| Who reads it | Your product, on behalf of each end user | Every engineer and every coding agent on the team |
+| What "current" means | The latest preference wins | The latest decision wins, and the old one stays on record |
+| Scale | Millions of end users | One team, many repositories, many tools |
+| Billed by | Requests, tokens, queries | Engineer |
+| Cost of a stale memory | A slightly worse reply | A bug your security review already killed, shipped again |
 
----
+That last row is the whole argument. In serving memory a stale fact is an annoyance; in engineering memory a stale fact is an incident. A stale memory is more dangerous than a missing one, which is why Recallium keeps the old decision on record and makes the current one explicit.
 
-## Memory types
+Mem0, Supermemory and Zep are serving memory, and good at it; Mem0 and Supermemory also ship Claude Code and Cursor plugins that remember the developer as a user. Letta builds stateful agents whose memory belongs to the agent. None of them is memory for the team: one record read and written by Claude Code on one laptop, Codex on another and Cursor on a third, often in the same afternoon. That is the job Recallium is built for.
 
-Recallium knows the difference between a debugging session, an architecture
-decision, and work in progress. Storing the right type means retrieving the
-right thing later.
+Read more: [Serving Memory vs. Engineering Memory](https://recallium.ai/blog/serving-memory-vs-engineering-memory) · [Why Recallium](https://recallium.ai/why-recallium) · [Recallium vs Mem0](https://recallium.ai/vs/mem0) · [Recallium vs Supermemory](https://recallium.ai/vs/supermemory) · [All comparisons](https://recallium.ai/comparisons).
 
-| Type | What it captures |
+#engineering-memory #serving-memory #ai-memory #agent-memory #ai-agent-memory #memory-for-coding-agents #memory-for-development-agents #developer-agent-memory #ai-software-engineering-agents #sdlc-memory #institutional-memory #team-memory #mcp #mcp-server #mcp-memory-server #model-context-protocol #claude-code #claude-code-memory #codex #codex-memory #cursor #cursor-memory #github-copilot #copilot-memory #claude-desktop #windsurf #cline #devin #ai-coding-agent #ai-coding-assistant #coding-agents #persistent-memory #context-management #llm-context #cross-session-memory #cross-tool-memory #developer-productivity #self-hosted #developer-tools #minime-mcp
+
+## How it works
+
+![Engineering context that compounds: your team works, Recallium organizes the context by project, workstream and files, and future work resumes from what the team already knows](images/recallium-flow.jpg)
+
+1. **Your team works.** People and agents design, implement, debug, test and review. Decisions and lessons form while the work is fresh.
+2. **Recallium preserves the context.** The useful reasoning stays organized by project, workstream and the files it is about, scoped by project access.
+3. **Future work starts informed.** Any connected agent retrieves the earlier decisions, warnings and next steps: why was this chosen, what did we try already, what should change next.
+
+You work through normal conversation. Ask your agent to remember a decision, investigate earlier fixes, or leave a continuation point; the integration attaches the context to the right project. Search works by meaning as well as by exact terms and file paths, so you ask the question you need answered instead of remembering a document title.
+
+Read more: [How Recallium works](https://docs.recallium.ai/concepts/how-recallium-works) · [Agents capture on your behalf](https://docs.recallium.ai/concepts/how-recallium-works#agents-capture-on-your-behalf) · [Access follows the project](https://docs.recallium.ai/concepts/how-recallium-works#access-follows-the-project).
+
+## Install
+
+Recallium Cloud is the managed service. One command connects every coding agent on the machine. It needs Node.js 22 or later; nothing is installed first, every command runs through `npx`.
+
+```bash
+npx -y recallium@latest install
+```
+
+![The Recallium installer: eleven agents found on this machine, eight wired to api.recallium.ai, with install and uninstall modes and a system check](images/setup-recallium.jpg)
+
+The installer detects the installed agents, signs you in once, shows its plan and writes nothing until you confirm. In every client the MCP server is named `recallium`, and the project name is derived from the Git repository. Then open a repository in your coding agent and ask, for example: *"What decisions and open tasks should I know about before I change the authentication flow?"*
+
+| Command | Purpose |
 |---|---|
-| `decision` | Architecture choices, tradeoffs, rejected alternatives |
-| `debug` | Root cause, fix applied, files changed |
-| `progress` | Where you left off, what's done, what's next |
-| `feature` | Design notes, implementation approach |
-| `research` | Findings, evaluations, references |
-| `code-snippet` | Working patterns, reusable solutions |
-| `rule` | Agent behavioral guardrails, per-project or global |
-| `learning` | Lessons discovered, gotchas, hard-won insights |
-| `discussion` | Team decisions, retro notes, context |
-| `design` | Architecture diagrams, system design notes |
-| `working-notes` | Scratch pad, temporary context |
+| `npx -y recallium@latest install` | Detect coding agents, review the setup, connect them and sign in |
+| `npx -y recallium@latest status` | Show client, sign-in, server and connected-agent state |
+| `npx -y recallium@latest doctor` | Run capture-health and integration checks, with the repair for each failed one |
+| `npx -y recallium@latest login` | Sign in again or replace a lost or revoked credential |
+| `npx -y recallium@latest update` | Update when a newer client is available |
+| `npx -y recallium@latest uninstall` | Open the Install / Modify screen and remove selected agents |
+| `npx -y recallium@latest uninstall --all` | Remove all Recallium agent wiring and local Recallium state |
 
----
+Use `--dry-run` on install or uninstall to preview the affected files first. The installer and uninstaller preserve configuration entries they do not own.
 
-## Real workflows
+Recallium Cloud is in a closed pilot. Join the waitlist at [recallium.ai/waitlist](https://recallium.ai/waitlist); pilot code holders join at [app.recallium.ai/pilot/join](https://app.recallium.ai/pilot/join).
 
-### Search and apply past decisions
+Read more: [Quickstart](https://docs.recallium.ai/quickstart) · [CLI reference](https://docs.recallium.ai/reference/cli) · [Install options](https://docs.recallium.ai/reference/cli#install-options) · [Remove Recallium](https://docs.recallium.ai/reference/cli#remove-recallium) · [Prerequisites and troubleshooting](https://docs.recallium.ai/guides/troubleshooting) · per-client setup for [Claude Code](https://docs.recallium.ai/guides/configure-ides/claude-code), [Codex](https://docs.recallium.ai/guides/configure-ides/codex), [Cursor](https://docs.recallium.ai/guides/configure-ides/cursor), [GitHub Copilot](https://docs.recallium.ai/guides/configure-ides/github-copilot), [VS Code](https://docs.recallium.ai/guides/configure-ides/vs-code) and [Claude Desktop](https://docs.recallium.ai/guides/configure-chat-apps/claude-desktop).
 
-```
-You:   "Build auth for the checkout flow"
+## Use it from your coding agent
 
-Agent: "Using your battle-tested pattern from payment-service-v2:
-        → JWT with refresh token rotation
-        → httpOnly cookies (per your security audit decision)
-        → Redis mutex to prevent race conditions (you debugged this for 6 hours)
-        → 15min access tokens, 7-day refresh tokens
+No command syntax. You talk to your agent in plain language and it calls Recallium on its own; send `recallium` by itself when you want the project context loaded again.
 
-        Implementing now..."
-```
+| You want to | Say this |
+|---|---|
+| Reload project context | `recallium` |
+| Start a session informed | Summarize the recent work, open follow-ups, and rules I should know. |
+| Check before editing a file | What should I know before editing `src/auth/jwt.ts`? |
+| Save a decision | Remember we chose Postgres over DynamoDB because the ledger needs strong consistency. Include the alternatives and the files we changed. |
+| Find past work | How did we handle expired OAuth tokens, and why did we reject silent refresh? |
+| Search uploaded documents | Search my documents for the API spec. |
+| Find recurring problems | Why do authentication bugs keep returning? Look across prior fixes. |
+| Think through a choice | Help me think through a gradual migration versus a full rewrite. |
+| Track a follow-up | Create a task to migrate the remaining endpoints, linked to the token rotation decision. |
+| Resume work | Where did we leave off? |
+| Wrap up the day | Summarize what we accomplished and save a continuation point. |
 
-![Memory Explorer](images/s1.jpg)
-*Search across all your stored decisions, patterns, and learnings — across every project.*
+![The recallium connector's tools listed in Claude Desktop's connector settings](images/recallium-tools-in-claude-desktop.jpg)
+*The same capabilities in every client: here, the `recallium` connector in Claude Desktop.*
 
----
+Five moments cover most of the habit: when you start a session, when you finish a piece of work, when you are about to edit a file, when you stop for the day, and when you return after a break. Save one decision, root cause, experiment or procedure at a time, with the reason and the files, while it is fresh.
 
-### Cross-project pattern intelligence
+Read more: [Prompt cheat sheet](https://docs.recallium.ai/guides/prompt-cheat-sheet) · [Daily workflow](https://docs.recallium.ai/guides/daily-workflow) · [Check context before editing](https://docs.recallium.ai/guides/daily-workflow#check-context-before-editing) · [Search and recall](https://docs.recallium.ai/guides/search-and-recall) · [Search by file](https://docs.recallium.ai/guides/search-and-recall#search-by-file) · [Power-user workflows](https://docs.recallium.ai/guides/power-user-workflows) · [Work across tools and projects](https://docs.recallium.ai/guides/multi-tool-and-project) · [Five rules for effective memory](https://docs.recallium.ai/guides/five-rules).
 
-```
-You:   "Get insights on database patterns across my projects"
+## Projects and workstreams
 
-Agent: "Analyzed 89 memories across 5 projects. Pattern detected:
+| Record | Answers |
+|---|---|
+| Project | Which product or repository owns this context? |
+| Workstream | Which body of work does this context explain? |
+| Memory | What did we decide, learn, fix or prove? |
+| Task | What action still needs to happen? |
 
-        You ALWAYS follow this progression:
-        1. Start with PostgreSQL (5/5 projects)
-        2. Hit connection pool limits around 10K users (3/5)
-        3. Add PgBouncer to solve it (3/3 that hit the issue)
+A **project** is the organization and access boundary. It usually maps to a repository; Recallium derives the name from the enclosing Git repository, and a clone can be mapped to an existing project with `git config --local recallium.projectName payments-platform`. Context from one project does not leak into another the user cannot access. Related projects can be linked as siblings or as parent and child while each keeps its own boundary.
 
-        Current project: user-service-v3
-        Expected scale: 50K users
+A **workstream** is a named effort inside a project, such as `oauth-migration` or `checkout-reliability`. It groups the decisions, designs, fixes and checkpoints that explain one journey, and moves through `planned`, `active`, `shipped` or `abandoned`. Another session loads the workstream and sees its constraints, decisions and latest progress together.
 
-        Recommendation: Include PgBouncer from day 1.
-        Adding it later caused 2 hours of downtime in admin-api."
-```
+Read more: [Projects and workstreams](https://docs.recallium.ai/concepts/projects-and-workstreams) · [Map a repository to an existing project](https://docs.recallium.ai/concepts/projects-and-workstreams#map-a-repository-to-an-existing-project) · [When to create a workstream](https://docs.recallium.ai/concepts/projects-and-workstreams#when-to-create-a-workstream).
 
-![Insights Dashboard](images/s2.jpg)
-*Discover patterns, recurring issues, and recommendations across all your projects.*
+## Memory across the software lifecycle
 
----
+| Stage | What Recallium keeps | How agents use it |
+|---|---|---|
+| Plan and design | The approach the team chose and why | An agent proposing a change sees what was already decided and why |
+| Build | What the team learned about the code, linked to the files it is about | Before an edit, search by topic and by file path |
+| Review | Team rules | Rules load into every agent session, in every connected tool |
+| Debug and incidents | The root cause, the fix, and the steps that worked | The next agent that hits the symptom finds the cause on the first search |
+| Commit | `Recallium-Memory:` commit trailers | A commit links to the memories that explain it |
+| Handoff | Workstreams, working state, session recap, tasks | A new session, agent or teammate resumes where the last one stopped |
+| Reference | Uploaded documents | Specs and other files are searched alongside memories |
 
-### Resume where you left off
+On Recallium Cloud, insights across a project surface recurring approaches, recurring bugs with their causes and fixes, technical debt, and how an effort moved over time. Teams, projects and role-based access are managed there too.
 
-```
-You:   "recallium"
+## Supported coding agents and IDEs
 
-Agent: "Welcome back! Loading your context...
+| Client | macOS | Windows | Linux |
+|---|:-:|:-:|:-:|
+| Claude Code | ✓ | ✓ | ✓ |
+| Codex CLI / Codex Work | ✓ | ✓ | ✓ |
+| Cursor | ✓ | ✓ | ✓ |
+| GitHub Copilot | ✓ | ✓ | ✓ |
+| VS Code | ✓ | ✓ | ✓ |
+| Claude Desktop | ✓ | ✓ | — |
+| Antigravity, OpenCode, Hermes Agent, Devin Desktop, Cline, Zed, DeepSeek dsh, Droid (Factory), Kilo Code, Qwen Code | ✓ | — | ✓ |
 
-        Project: ecommerce-api
-        Recent: 12 memories in last 7 days
+Continue.dev connects by manual setup. Any other MCP client can connect to the same endpoint; 60+ MCP clients are supported.
 
-        Last session (2 days ago):
-        → Implemented JWT refresh token rotation
-        → Fixed race condition in payment webhook
-        → Decision: Using Redis for session storage
+Read more: [Supported clients](https://docs.recallium.ai/guides/supported-clients) · [Configure Recallium in your IDEs](https://docs.recallium.ai/guides/configure-ides) · [Configure Recallium for chat apps](https://docs.recallium.ai/guides/configure-chat-apps).
 
-        Pending Tasks:
-        → Add rate limiting to checkout endpoint
-        → Write tests for payment flow
+## Where it helps
 
-        Active Rules:
-        → Always confirm destructive operations
-        → Search memories before implementing
+- **The incident at 2am.** The root cause and the fix from the last time this symptom appeared are the first search result.
+- **Handing off a half-finished migration.** The workstream carries the constraints, the decisions and the working state to whoever picks it up, in whichever tool they use.
+- **The decision that was already replaced.** Agents follow the current decision, not the one in a stale comment.
+- **Onboarding a new engineer.** Their agent starts from what the team knows about the codebase on day one.
+- **When a senior engineer leaves.** What they worked out stays with the project.
+- **Three tools, one memory.** Research in Claude Desktop, build in Cursor, review in Claude Code, with one record across all three.
+- **Conventions that hold without reminders.** Team rules are loaded into every session, so reviewers stop repeating themselves.
+- **The security review.** Every decision has a date, an author, its files and its reasons.
 
-        Ready to continue."
-```
+Read more: [Use cases](https://recallium.ai/use-cases) · [How we build Recallium with Recallium](https://recallium.ai/how-we-build-recallium) · [Research in one tool, build in another](https://docs.recallium.ai/guides/multi-tool-and-project#research-in-one-tool-build-in-another) · [Investigate recurring bugs](https://docs.recallium.ai/guides/power-user-workflows#investigate-recurring-bugs).
 
----
+## Rules files and Recallium
 
-### Structured thinking — decisions that stick
+CLAUDE.md, AGENTS.md, Cursor Rules and Copilot instructions hold standing instructions that one tool loads at the start of a session. They are the right place for those. Recallium holds what the team has learned since: the record agents produce while they work, searched on demand and shared across every tool and teammate. Keep both.
 
-```
-You:   "Think through which auth approach to use"
+## Retrieval
 
-Agent: "Starting a reasoning sequence...
+On LongMemEval-S, all 500 questions including abstention, Recallium finds the right memory for 499 (99.8% hit@10) and returns 98.6% of relevant sessions, from 3.8 results per question on average. Answer accuracy is 98.4% with a Claude Opus 5.5 reader and 90.2% with the official GPT-4o reader, under the official GPT-4o judge. Reader, judge, depth and dates are published at [recallium.ai/benchmarks](https://recallium.ai/benchmarks). Other vendors' reports use different readers, judges and depths, so they are not a controlled head-to-head ranking.
 
-        Analysis: JWT — stateless, edge-compatible, no server state needed
-        Analysis: Sessions — easier revocation, but requires Redis at edge
-        Conclusion: Going with JWT — edge requirement is non-negotiable
+## Privacy and data handling
 
-        ✓ Stored as a decision memory. Searchable forever."
-```
+The client sends two kinds of data to Recallium Cloud. **Memory content** is sent only when your agent explicitly saves a memory on your behalf. **Client telemetry** is edit metadata that links memories to the work in a session: file paths, hashes, edit and activity counts, and Git branch and commit provenance. The sensor does not send source file contents. `npx -y recallium@latest status` shows which server your client uses.
 
----
+Recallium does not train AI models on customer memories and does not sell customer data. Tenants are isolated by row-level security; data is encrypted in transit and at rest on Google Cloud. Sharing follows the repository: a repository only you connect stays yours. A Data Processing Addendum and an availability policy are published.
 
-### Upload documents, share knowledge
+Read more: [Privacy and data handling](https://docs.recallium.ai/reference/privacy) · [Client telemetry](https://docs.recallium.ai/reference/privacy#client-telemetry) · [Security and trust](https://recallium.ai/security) · [Privacy policy](https://recallium.ai/privacy) · [DPA](https://recallium.ai/dpa).
 
-```
-You:   [Uploads "API Security Guidelines v2.pdf"]
+## Pricing
 
-Agent: "Processing... Done in 28 seconds.
-        868 chunks from 247 pages. I now understand:
-        → OAuth 2.0 implementation (section 3)
-        → Rate limiting rules (section 7.2)
-        → Webhook signature verification (section 9)
+Cloud Free: 500 memories a month until December 2026, nothing to run. Cloud Pro: shared team memory, 5,000 memories a month, priced per engineer. [recallium.ai/pricing](https://recallium.ai/pricing).
 
-        All stored with semantic search enabled."
+## FAQ
 
----
+### What is Recallium?
+Institutional engineering memory for humans and AI agents. Decisions, root causes, fixes, constraints and rules captured in one session, in Claude Code, Codex, Cursor, GitHub Copilot or another MCP client, are recalled by every agent and teammate on the project in the next.
 
-Later, in Cursor:
+### How do I add memory to Claude Code, Codex or Cursor?
+Run `npx -y recallium@latest install`. It detects the agents on your machine, signs you in once and connects each one. Per-client guides are in the [docs](https://docs.recallium.ai/guides/configure-ides).
 
-You:   "Build the OAuth refresh token endpoint"
+### How is Recallium different from CLAUDE.md or Cursor Rules?
+Rules files are instructions one tool loads at the start of a session. Recallium is the record agents produce while they work, searched on demand and shared across tools and teammates. Most teams keep both.
 
-Agent: [Generates code matching your PDF exactly]
-       "Implementation follows your API docs:
-        → 15-minute access tokens
-        → 7-day refresh tokens with rotation
-        → httpOnly, Secure, SameSite=Strict cookies"
-```
+### How is Recallium different from Mem0 or Supermemory?
+Mem0 and Supermemory are memory APIs you build into an AI product so it remembers its users; both also ship Claude Code and Cursor plugins. Recallium is memory for the team building the product: it follows how engineering teams work, from design and decisions through debugging and shipping, with workstreams for handoffs, team rules in every session, commits linked to the memories behind them, and teams and role-based access on Recallium Cloud. The long form: [Serving Memory vs. Engineering Memory](https://recallium.ai/blog/serving-memory-vs-engineering-memory).
 
-![Documents Page](images/s3.jpg)
-*Upload PDFs, specs, and docs that become instantly searchable by all your AI agents.*
+### What is an MCP memory server?
+The Model Context Protocol is an open standard for connecting AI agents to tools and data. Recallium is an MCP server for team memory: one endpoint every connected agent reads and writes.
 
----
+### Can my team see my personal projects?
+No. Sharing follows the repository. A repository your team connects on Cloud Pro is shared with the team; a repository only you connect stays yours. On Cloud Free nothing is shared.
 
-### Agent rules engine
+### Why is context missing when I switch tools?
+Most missing-context problems across tools are project-scope mismatches. Use the same project name in every connected agent, or [map the clone](https://docs.recallium.ai/concepts/projects-and-workstreams#map-a-repository-to-an-existing-project) to the existing project once.
 
-```
-You:   "Store a rule: never run migrations without a rollback
-        plan reviewed by the team"
+### Is there a self-hosted version?
+Yes. The community edition in [`community/`](community/) runs on Docker on your own machine or network, free under the Elastic License v2, and continues to be supported. See below.
 
-Agent: "✓ Rule stored for payments-api.
-        I'll load it automatically at the start of every session."
-```
+### Is Recallium the same as MiniMe MCP?
+Yes. Recallium was called MiniMe MCP (also written MiniMe-MCP) from August 2025 until it was renamed. Existing MiniMe installations are the community edition and continue to be supported.
 
----
+## Self-hosted community edition (formerly MiniMe MCP)
 
-### Keep memory current
+The self-hosted community edition, which shipped as MiniMe MCP until the rename, **continues to be supported**. It lives in the [`community/`](community/) directory of this repository: a Docker deployment with its [installation guide](community/install/README.md), the [Claude Code skill](community/claude-code-skills/) and the [Claude Desktop extension](community/claude-desktop-extension/). The image is published on [Docker Hub](https://hub.docker.com/r/recalliumai/recallium). It is free under the [Elastic License v2](LICENSE) and runs on your own machine or network, including behind a corporate proxy or air-gapped; see the [community README](community/README.md). Report issues for either edition on [GitHub Issues](https://github.com/recallium-ai/recallium/issues).
 
-```
-Agent: "Found 47 memories about Redis caching from user-service-v1.
+Recallium Cloud is the managed service and carries the team features above: shared repositories, teams and role-based access, insights, and nothing to run. Moving your memories across takes one export and one import; see [Migrating from the community edition to Recallium Cloud](#migrating-from-the-community-edition-to-recallium-cloud).
 
-        I also see you migrated to Memcached in user-service-v2 last month.
-        Should I inactivate the old Redis memories?"
+## Migrating from the community edition to Recallium Cloud
 
-You:   "Yes. Reason: migrated to Memcached."
+Your projects and memories move from a self-hosted instance to Recallium Cloud as one zip file. Nothing is deleted from the self-hosted instance; it keeps running until you stop it.
 
-Agent: "✓ Inactivated 47 memories (soft delete, recoverable)
-        ✓ Audit trail preserved
-        ✓ Suggesting Memcached patterns by default now"
-```
+**1. Open Import/Export in the community dashboard.** In your self-hosted dashboard, go to **Projects** and click **Import/Export** at the top right.
 
-![Memory Management](images/s4.jpg)
-*Update, archive, or restore memories as your stack evolves.*
+![Community edition dashboard: the Projects page with the Import/Export button at the top right](images/export-step-1.jpg)
 
----
+**2. Export all projects.** On the **Export** tab, keep the scope at **All Projects** (a complete backup: projects, sessions, thinking sequences, thoughts, memories and project links) and leave the dates empty to export everything. The preview shows the record counts and size. Click **Export** and save the zip. The same export is available from the command line with [`community/install/download-memories.sh`](community/install/download-memories.sh), which fetches it from your instance's `/api/data/export` endpoint.
 
-## RecallBench
+![Community edition Data Management dialog on the Export tab: scope All Projects, empty date range, a preview of projects, memories and sessions, and the Export button](images/export-step-2.jpg)
 
-Most memory benchmarks test whether an AI can recall what someone said in a
-conversation. That's not how developer agents use memory.
+**3. Open Import/Export in Recallium Cloud.** Sign in at [app.recallium.ai](https://app.recallium.ai), go to **Projects** and click **Import/Export**.
 
-**RecallBench** is a benchmark built specifically for developer agent memory.
-Test memories are drawn from realistic engineering workflows — architecture
-decisions, debugging sessions, sprint retrospectives, tradeoff evaluations —
-not generic chat transcripts.
+![Recallium Cloud: the Projects page with the Import/Export button at the top right](images/import-step-3.jpg)
 
-The benchmark tests what actually matters in practice:
+**4. Import the zip.** On the **Import** tab, choose **Select ZIP File to Import**, pick the export from step 2 and click **Import**. Your projects appear under the same names, so the agents you connect next find them by the Git repository as before.
 
-- Does the agent find the right *decision* when facing a similar problem weeks later?
-- Does it surface the relevant *debug session* when the same class of bug reappears?
-- Does it scope retrieval correctly to the right project when memories from multiple codebases are in the pool?
+![Recallium Cloud Data Management dialog on the Import tab with the Select ZIP File to Import control](images/import-step-4.jpg)
 
-This is a fundamentally different evaluation than LoCoMo or LongMemEval, which
-measure verbatim recall across generic topics. Developer memory has its own
-taxonomy — and it deserves its own benchmark.
+**5. Point your agents at Recallium Cloud.** Run `npx -y recallium@latest install`. It connects the coding agents on the machine to Cloud and signs you in. If a clone's repository name differs from the imported project name, map it once with `git config --local recallium.projectName <project-name>` ([docs](https://docs.recallium.ai/concepts/projects-and-workstreams#map-a-repository-to-an-existing-project)). Then remove the self-hosted MCP entry from each client, or leave both connected while you compare.
 
-Recallium is evaluated against RecallBench as its primary quality signal.
-
-→ [recallbench.ai](https://recallbench.ai) *(coming soon)*
-
----
-
-## Setup
-
-**Requirements:** Docker
-
-```bash
-# macOS / Linux
-cd install
-chmod +x start-recallium.sh
-./start-recallium.sh
-
-# Windows
-cd install
-start-recallium.bat
-```
-
-Visit `http://localhost:9001` to complete setup.
-
-![Setup Wizard](images/setup.png)
-*Guided setup — takes under 2 minutes.*
-
-### Choose your LLM provider
-
-![Provider Selection](images/select_llms.png)
-*Anthropic, OpenAI, Gemini, Ollama, or OpenRouter — use what you already have.*
-
-**Free local option:** Ollama + built-in embeddings. Zero API costs. Data never leaves your machine.
-
-![Provider Priority](images/set_llm_priority.png)
-*Configure failover providers for reliability.*
-
-### Connect your IDE
-
-All modern IDEs connect via HTTP — no npm client needed:
-
-```
-http://localhost:8001/mcp
-```
-
-**Claude Code:**
-
-```bash
-claude mcp add --scope user --transport http recallium http://localhost:8001/mcp
-```
-
-**Supported IDEs:**
-Cursor • Claude Code • Claude Desktop • VS Code • Windsurf • Roo Code •
-Visual Studio 2022 • JetBrains • Zed • Cline • BoltAI • Augment Code •
-Warp • Amazon Q • AntiGravity • and more
-
-See the [full installation guide](install/README.md) for your IDE's exact config.
-
----
-
-## Corporate & Air-Gapped Deployment
-
-Running Recallium behind a corporate proxy or in an air-gapped environment?
-
-**SSL Certificate Issues (Corporate Proxy)**
-
-If you see `SSL: CERTIFICATE_VERIFY_FAILED` errors, your corporate proxy is likely
-intercepting HTTPS traffic. Add to `recallium.env`:
-
-```bash
-DISABLE_SSL_VERIFY=1
-```
-
-⚠️ Only use in trusted corporate networks.
-
-**Air-Gapped / Offline Mode**
-
-For environments with no internet access:
-1. Pre-download the embedding model on an internet-connected machine
-2. Copy the cache to your air-gapped machine
-3. Enable offline mode:
-
-```bash
-HF_HUB_OFFLINE=1
-TRANSFORMERS_OFFLINE=1
-```
-
-See the [installation guide](install/README.md#ssl-certificate-errors-corporate-proxy--air-gapped-environments) for detailed instructions.
-
----
-
-## Enterprise
-
-Recallium Community is free under ELv2.
-
-Recallium Enterprise adds RBAC, a compliance dashboard, air-gapped deployment,
-and dedicated support.
-
-GA: June 2026 → [recallium.ai/enterprise](https://recallium.ai/enterprise)
-
----
+Questions about a migration: [support@recallium.ai](mailto:support@recallium.ai).
 
 ## Links
 
 | | |
 |---|---|
 | Website | [recallium.ai](https://recallium.ai) |
-| Setup guide | [recallium.ai/setup](https://recallium.ai/setup) |
+| Why Recallium | [recallium.ai/why-recallium](https://recallium.ai/why-recallium) |
+| Memory for coding agents | [recallium.ai/memory-for-coding-agents](https://recallium.ai/memory-for-coding-agents) |
+| Docs | [docs.recallium.ai](https://docs.recallium.ai) · [index for agents](https://docs.recallium.ai/llms.txt) |
+| Pricing | [recallium.ai/pricing](https://recallium.ai/pricing) |
 | Changelog | [recallium.ai/changelog](https://recallium.ai/changelog) |
-| Community | [r/Recallium](https://reddit.com/r/Recallium) |
-| Docker Hub | [recalliumai/recallium](https://hub.docker.com/r/recalliumai/recallium) |
+| Community | [Discord](https://discord.gg/sbc2SFBfzd) · [r/recallium](https://www.reddit.com/r/recallium/) · [X](https://x.com/recallium) |
 | Issues | [GitHub Issues](https://github.com/recallium-ai/recallium/issues) |
-
----
+| Support | support@recallium.ai |
 
 ## License
 
-Community: [Elastic License v2](LICENSE) — free to use and self-host.
-You may not offer Recallium as a hosted service to third parties.
-
-Enterprise: Commercial license available.
-[recallium.ai/enterprise](https://recallium.ai/enterprise)
-
----
-
-*Built by developers who got tired of explaining themselves to their AI assistants.*
-<!--
-persistent memory for AI coding agents
-MCP memory server for developers
-Claude Code persistent memory
-Cursor persistent memory
-Windsurf MCP memory
-AI agent memory across sessions
-developer memory OS
-MCP server memory tool
-persistent context for IDE agents
-AI coding assistant memory
-Claude Code MCP tools
-agent memory for developers
-memory that survives context window
-structured memory for AI agents
-developer workflow memory
-project-scoped AI memory
-cross-session memory for coding agents
-AI memory benchmark developer workflows
-RecallBench
--->
+The community edition in `community/` is licensed under the [Elastic License v2](LICENSE): free to use and self-host; you may not offer it as a hosted service to third parties. Recallium Cloud is provided under its [terms of service](https://recallium.ai/terms).
