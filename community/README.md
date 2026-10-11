@@ -35,7 +35,7 @@ tools don't understand any of that.
 Recallium is built around the way developers actually work:
 
 - **Projects are the unit of context** — memories are scoped, isolated, and retrieved per project
-- **Memory types reflect real developer artifacts** — decisions, debug sessions, research, in-progress work, rules, code patterns
+- **Memory types are structured around the engineering journey** — a design, a decision, a bug and its fix, work in progress, each stored as what it is
 - **Search is tuned for engineering queries** — finding the reason behind a past choice, not just matching keywords
 - **Session continuity is automatic** — your agent knows what sprint you're in, what's pending, and where you left off
 
@@ -90,23 +90,12 @@ Just say **`recallium`** in your IDE. Your agent instantly loads:
 
 ## Memory types
 
-Recallium knows the difference between a debugging session, an architecture
-decision, and work in progress. Storing the right type means retrieving the
-right thing later.
-
-| Type | What it captures |
-|---|---|
-| `decision` | Architecture choices, tradeoffs, rejected alternatives |
-| `debug` | Root cause, fix applied, files changed |
-| `progress` | Where you left off, what's done, what's next |
-| `feature` | Design notes, implementation approach |
-| `research` | Findings, evaluations, references |
-| `code-snippet` | Working patterns, reusable solutions |
-| `rule` | Agent behavioral guardrails, per-project or global |
-| `learning` | Lessons discovered, gotchas, hard-won insights |
-| `discussion` | Team decisions, retro notes, context |
-| `design` | Architecture diagrams, system design notes |
-| `working-notes` | Scratch pad, temporary context |
+Memories are not free text in a bucket. Each one is stored as the kind of thing
+it is in an engineering journey: a design, a decision and the alternatives it
+rejected, a bug with its root cause and fix, where an effort stands, a lesson
+learned. Storing the right type means your agent retrieves the right thing
+later: the decision when it faces the same tradeoff, the fix when the same
+class of bug comes back.
 
 ---
 
